@@ -4,7 +4,9 @@
   "description": "https://coursehunter.net/course/next-js-i-apollo-prilozhenie-portfolio-s-react-graphql-node",
   "main": "index.js",
   "scripts": {
-    "dev": "next",
+    "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
+    "dev-next": "next",
+    "server": "cross-env NODE_OPTIONS='--inspect' node server/index.js",
     "build": "next build",
     "start": "next start"
   },
@@ -20,9 +22,14 @@
   },
   "homepage": "https://github.com/vstrelianyi/20210318_next_apollo-portfolio#readme",
   "dependencies": {
+    "bootstrap": "^4.6.0",
+    "cross-env": "^7.0.3",
+    "express": "^4.17.1",
     "next": "^10.0.9",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-bootstrap": "^1.5.2",
+    "react-dom": "^17.0.1",
+    "sass": "^1.32.8"
   },
   "devDependencies": {
     "eslint": "^7.22.0",
