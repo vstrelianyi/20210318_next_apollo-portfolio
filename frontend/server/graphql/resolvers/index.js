@@ -36,12 +36,11 @@ const data = {
   ],
 };
 
-exports.portfolioResolvers = {
+exports.portfolioQueries = {
   hello: () => {
     return 'Hello world';
   },
-  portfolio: ( args ) => {
-    const id = args.id;
+  portfolio: ( root, { id, } ) => {
     const portfolio = data.portfolios.find( portfolio => portfolio._id === id );
 
     return portfolio !== undefined ? portfolio : [];
@@ -49,12 +48,23 @@ exports.portfolioResolvers = {
   portfolios: () => {
     return data.portfolios;
   },
-  createPortfolio: ( { input, } ) => {
+};
+
+exports.portfolioMutations = {
+  createPortfolio: ( root, { input, } ) => {
     const _id = require( 'crypto' ).randomBytes( 10 ).toString( 'hex' );
     const newPortfolio = { ...input, };
     newPortfolio._id = _id;
     data.portfolios.push( newPortfolio );
 
     return newPortfolio;
+  },
+  updatePortfolio: ( root, { id, input, } ) => {
+    const index = data.portfolios.findIndex( portfolio => portfolio._id === id );
+    const oldPortfolio = data.portfolios[index];
+    const updatedPortfolio = { ...oldPortfolio, ...input, };
+    data.portfolios[index] = updatedPortfolio;
+
+    return updatedPortfolio;
   },
 };
