@@ -1,4 +1,7 @@
 import axios from 'axios';
+import Link from 'next/link';
+
+import style from './PortfolioCard.module.scss';
 
 const Portfolio = ( { portfolios, } ) => {
 
@@ -35,16 +38,20 @@ export default Portfolio;
 const PortfolioCard = ( { portfolio, } ) => {
   return (
     <div className="col-md-4">
-      <div className="card subtle-shadow no-border">
-        <div className="card-body">
-          <h5 className="card-title">{ portfolio.title }</h5>
-          <h6 className="card-subtitle mb-2 text-muted">{ portfolio.jobTitle }</h6>
-          <p className="card-text fs-2">{ portfolio.description }</p>
-        </div>
-        <div className="card-footer no-border">
-          <small className="text-muted">{ `${ portfolio.startDate } - ${ portfolio.endDate }` }</small>
-        </div>
-      </div>
+      <Link href={ `/portfolio/${ portfolio._id }` }>
+        <a className={ `PortfolioCard ${ style.PortfolioCard }` }>
+          <div className="card subtle-shadow no-border">
+            <div className="card-body">
+              <h5 className="card-title">{ portfolio.title }</h5>
+              <h6 className="card-subtitle mb-2 text-muted">{ portfolio.jobTitle }</h6>
+              <p className="card-text fs-2">{ portfolio.description }</p>
+            </div>
+            <div className="card-footer no-border">
+              <small className="text-muted">{ `${ portfolio.startDate } - ${ portfolio.endDate }` }</small>
+            </div>
+          </div>
+        </a>
+      </Link>
     </div>
   );
 };
