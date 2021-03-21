@@ -1,6 +1,7 @@
 const PageHome = () => {
   return (
     <>
+
       <section className="section-title">
         <div className="px-2">
           <div className="pt-5 pb-4">
@@ -8,6 +9,7 @@ const PageHome = () => {
           </div>
         </div>
       </section>
+
       <section className="pb-5">
         <div className="row">
           <div className="col-md-4">
@@ -48,7 +50,9 @@ const PageHome = () => {
           </div>
         </div>
       </section>
+
       <a href="" className="btn btn-main bg-blue ttu">See More Portfolios</a>
+
       <section className="section-title">
         <div className="px-2">
           <div className="pt-5 pb-4">
@@ -56,6 +60,7 @@ const PageHome = () => {
           </div>
         </div>
       </section>
+
       <section className="pb-5">
         <div className="list-group">
           <a href="#" className="list-group-item list-group-item-action flex-column align-items-start py-3 subtle-shadow no-border">
@@ -93,6 +98,7 @@ const PageHome = () => {
           </a>
         </div>
       </section>
+
       <a href="" className="btn btn-main bg-blue ttu">See More Posts</a>
 
       { /* REPLIER STARTS */ }
@@ -135,6 +141,7 @@ const PageHome = () => {
         </div>
       </div>
       { /* REPLIER ENDS */ }
+
     </>
   );
 };

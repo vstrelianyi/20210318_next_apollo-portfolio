@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
     "dev-next": "next",
-    "server": "cross-env NODE_OPTIONS='--inspect' node server/index.js",
+		"server": "cross-env NODE_OPTIONS='--inspect' nodemon server server/index.js",
+    "server-old": "cross-env NODE_OPTIONS='--inspect' node server/index.js",
     "build": "next build",
     "start": "next start"
   },
@@ -25,6 +26,8 @@
     "bootstrap": "^4.6.0",
     "cross-env": "^7.0.3",
     "express": "^4.17.1",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.5.0",
     "next": "^10.0.9",
     "react": "^17.0.1",
     "react-bootstrap": "^1.5.2",

@@ -5,6 +5,8 @@
 			"@/src/*": [ "/*" ],
 			"@/components/*": [ "components/*" ],
 			"@/utils/*": [ "utils/*" ],
+			"@/queries/*": [ "queries/*" ],
+			"@/mutations/*": [ "mutations/*" ],
     }
   }
 }
