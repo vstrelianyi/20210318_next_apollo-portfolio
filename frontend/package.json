@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
     "dev-next": "next",
-		"server": "cross-env NODE_OPTIONS='--inspect' nodemon server server/index.js",
+    "server": "cross-env NODE_OPTIONS='--inspect' nodemon --watch server server/index.js",
     "server-old": "cross-env NODE_OPTIONS='--inspect' node server/index.js",
     "build": "next build",
     "start": "next start"
@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/vstrelianyi/20210318_next_apollo-portfolio#readme",
   "dependencies": {
+    "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "cross-env": "^7.0.3",
     "express": "^4.17.1",
