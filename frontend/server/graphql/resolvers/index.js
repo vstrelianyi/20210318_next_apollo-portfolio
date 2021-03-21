@@ -53,8 +53,7 @@ exports.portfolioQueries = {
 exports.portfolioMutations = {
   createPortfolio: ( root, { input, } ) => {
     const _id = require( 'crypto' ).randomBytes( 10 ).toString( 'hex' );
-    const newPortfolio = { ...input, };
-    newPortfolio._id = _id;
+    const newPortfolio = { _id, ...input, };
     data.portfolios.push( newPortfolio );
 
     return newPortfolio;

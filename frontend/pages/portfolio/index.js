@@ -1,9 +1,18 @@
 import axios from 'axios';
 import Link from 'next/link';
 
+import { useState } from 'react';
+
 import style from './PortfolioCard.module.scss';
 
-const Portfolio = ( { portfolios, } ) => {
+const Portfolio = ( { data, } ) => {
+
+  const [ portfolios, setPortfolios, ] = useState( data.portfolios );
+
+  const handleCreatePortfolioBtnClick = async () => {
+    const newPortfolio = await createPortfolio();
+    setPortfolios( [ ...portfolios, newPortfolio, ] );
+  };
 
   return (
     <>
@@ -13,14 +22,15 @@ const Portfolio = ( { portfolios, } ) => {
             <h1>Portfolios</h1>
           </div>
         </div>
+        <button className="btn btn-primary" onClick={ handleCreatePortfolioBtnClick }>Create portfolio</button>
       </section>
+
       <section className="pb-5">
         <div className="row">
-
           { portfolios.length > 0 && portfolios.map( portfolio => <PortfolioCard  key={ portfolio._id } portfolio={ portfolio }/> ) }
-
         </div>
       </section>
+
       <a href="" className="btn btn-main bg-blue ttu">See More Portfolios</a>
       <section className="section-title">
         <div className="px-2">
@@ -62,10 +72,45 @@ export const getStaticProps = async () => {
 
   return {
     props: {
-      portfolios,
+      data: {
+        portfolios,
+      },
     },
     revalidate: 1,
   };
+};
+
+const createPortfolio = () => {
+  const query = `
+		mutation CreatePortfolioItem {
+			createPortfolio(
+				input: {
+					title: "new title"
+					company: "new company"
+					companyWebsite: "new companyWebsite"
+					location: "new location"
+					jobTitle: "new jobTitle"
+					description: "new description"
+					startDate: "01/01/2020"
+					endDate: "01/01/2021"
+				}
+			)
+			{
+				_id
+				title
+				companyWebsite
+				location
+				jobTitle
+				description
+				startDate
+				endDate
+			}
+		}
+	`;
+
+  return axios.post( 'http://localhost:3000/graphql', { query, } )
+    .then( ( { data: graph, } ) => graph.data )
+    .then( data => data.createPortfolio );
 };
 
 const fetchPortfolios = () => {
@@ -84,12 +129,7 @@ const fetchPortfolios = () => {
 		}
 	`;
 
-  return axios.post(
-    'http://localhost:3000/graphql',
-    {
-      query,
-    }
-  )
+  return axios.post( 'http://localhost:3000/graphql', { query, } )
     .then(	( { data: graph, } ) => {
       return graph.data.portfolios;
     } );
