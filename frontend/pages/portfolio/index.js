@@ -3,7 +3,8 @@ import Link from 'next/link';
 
 import { useState } from 'react';
 
-import style from './PortfolioCard.module.scss';
+import stylePortfolio from './Portfolio.module.scss';
+import stylePortfolioCard from './PortfolioCard.module.scss';
 
 const Portfolio = ( { data, } ) => {
 
@@ -12,6 +13,14 @@ const Portfolio = ( { data, } ) => {
   const handleCreatePortfolioBtnClick = async () => {
     const newPortfolio = await createPortfolio();
     setPortfolios( [ ...portfolios, newPortfolio, ] );
+  };
+
+  const handleUpdatePortfolioBtnClick = async ( id ) => {
+    const updatedPortfolio = await updatePortfolio( id );
+    const index = portfolios.findIndex( portfolio => portfolio._id === id );
+    const newPortfolios = [ ...portfolios, ];
+    newPortfolios[index] = updatedPortfolio;
+    setPortfolios( newPortfolios );
   };
 
   return (
@@ -25,9 +34,9 @@ const Portfolio = ( { data, } ) => {
         <button className="btn btn-primary" onClick={ handleCreatePortfolioBtnClick }>Create portfolio</button>
       </section>
 
-      <section className="pb-5">
+      <section className={ `${ stylePortfolio.Portfolio } pb-5` }>
         <div className="row">
-          { portfolios.length > 0 && portfolios.map( portfolio => <PortfolioCard  key={ portfolio._id } portfolio={ portfolio }/> ) }
+          { portfolios.length > 0 && portfolios.map( portfolio => <PortfolioCard key={ portfolio._id } portfolio={ portfolio } handleUpdatePortfolioBtnClick={ handleUpdatePortfolioBtnClick }/> ) }
         </div>
       </section>
 
@@ -45,11 +54,11 @@ const Portfolio = ( { data, } ) => {
 
 export default Portfolio;
 
-const PortfolioCard = ( { portfolio, } ) => {
+const PortfolioCard = ( { portfolio, handleUpdatePortfolioBtnClick, } ) => {
   return (
     <div className="col-md-4">
       <Link href={ `/portfolio/${ portfolio._id }` }>
-        <a className={ `PortfolioCard ${ style.PortfolioCard }` }>
+        <a className={ `PortfolioCard ${ stylePortfolioCard.PortfolioCard }` }>
           <div className="card subtle-shadow no-border">
             <div className="card-body">
               <h5 className="card-title">{ portfolio.title }</h5>
@@ -62,6 +71,7 @@ const PortfolioCard = ( { portfolio, } ) => {
           </div>
         </a>
       </Link>
+      <button className="btn btn-warning" onClick={ () => handleUpdatePortfolioBtnClick( portfolio._id ) }>Update Portfolio</button>
     </div>
   );
 };
@@ -78,6 +88,41 @@ export const getStaticProps = async () => {
     },
     revalidate: 1,
   };
+};
+
+const updatePortfolio = ( id ) => {
+  const query = `
+		mutation updatePortfolioItem {
+			updatePortfolio(
+				id: "${ id }",
+				input: {
+					title: "Updated title"
+					company: "Updated company"
+					companyWebsite: "Updated companyWebsite"
+					location: "Updated location"
+					jobTitle: "Updated jobTitle"
+					description: "Updated description"
+					startDate: "01/01/2020"
+					endDate: "01/01/2021"
+				}
+			)
+			{
+				_id
+				title
+				company
+				companyWebsite
+				location
+				jobTitle
+				description
+				startDate
+				endDate
+			}
+		}
+	`;
+
+  return axios.post( 'http://localhost:3000/graphql', { query, } )
+    .then( ( { data: graph, } ) => graph.data )
+    .then( data => data.updatePortfolio );
 };
 
 const createPortfolio = () => {
@@ -98,6 +143,7 @@ const createPortfolio = () => {
 			{
 				_id
 				title
+				company
 				companyWebsite
 				location
 				jobTitle

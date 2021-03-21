@@ -1,0 +1,19 @@
+.Portfolio{
+	:global{
+		// layout
+		.row{
+			>div{
+				display: flex;
+				flex-wrap: wrap;
+			}
+		}
+
+		// components
+		button{
+			display: flex;
+			align-items: center;
+			height: 40px;
+			margin-top: auto;
+		}
+	}
+}
