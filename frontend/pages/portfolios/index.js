@@ -3,10 +3,10 @@ import Link from 'next/link';
 
 import { useState } from 'react';
 
-import stylePortfolio from './Portfolio.module.scss';
+import stylePortfolio from './Portfolios.module.scss';
 import stylePortfolioCard from './PortfolioCard.module.scss';
 
-const Portfolio = ( { data, } ) => {
+const PagePortfolios = ( { data, } ) => {
 
   const [ portfolios, setPortfolios, ] = useState( data.portfolios );
 
@@ -34,25 +34,25 @@ const Portfolio = ( { data, } ) => {
         <button className="btn btn-primary" onClick={ handleCreatePortfolioBtnClick }>Create portfolio</button>
       </section>
 
-      <section className={ `${ stylePortfolio.Portfolio } pb-5` }>
+      <section className={ `${ stylePortfolio.Portfolios } pb-5` }>
         <div className="row">
           { portfolios.length > 0 && portfolios.map( portfolio => <PortfolioCard key={ portfolio._id } portfolio={ portfolio } handleUpdatePortfolioBtnClick={ handleUpdatePortfolioBtnClick }/> ) }
         </div>
       </section>
 
       <a href="" className="btn btn-main bg-blue ttu">See More Portfolios</a>
-      <section className="section-title">
+      { /* <section className="section-title">
         <div className="px-2">
           <div className="pt-5 pb-4">
             <h1>Ask Me</h1>
           </div>
         </div>
-      </section>
+      </section> */ }
     </>
   );
 };
 
-export default Portfolio;
+export default PagePortfolios;
 
 const PortfolioCard = ( { portfolio, handleUpdatePortfolioBtnClick, } ) => {
   return (
@@ -78,7 +78,11 @@ const PortfolioCard = ( { portfolio, handleUpdatePortfolioBtnClick, } ) => {
 
 export const getStaticProps = async () => {
   // console.log( 'getStaticProps Portfolio' );
-  const portfolios = await fetchPortfolios();
+  // const portfolios = await fetchPortfolios();
+  const portfolios = [
+    { id: 0, title: 'Portfolio 1', },
+    { id: 1, title: 'Portfolio 2', },
+  ];
 
   return {
     props: {

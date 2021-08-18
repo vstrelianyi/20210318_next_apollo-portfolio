@@ -51,7 +51,7 @@ const PageHome = () => {
         </div>
       </section>
 
-      <a href="" className="btn btn-main bg-blue ttu">See More Portfolios</a>
+      <a href="" className="btn btn-main bg-blue ttu mb-5">See More Portfolios</a>
 
       <section className="section-title">
         <div className="px-2">
@@ -70,7 +70,7 @@ const PageHome = () => {
             </div>
             <p className="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
             <div className="avatar-container my-2">
-              <img src="https://via.placeholder.com/150" className="avatar-image mr-2"></img>
+              <img src="https://via.placeholder.com/150" className="avatar-image" style={ { marginRight: '10px', } }></img>
               <span className="avatar-title">Filip Jerga</span>
             </div>
           </a>
@@ -81,7 +81,7 @@ const PageHome = () => {
             </div>
             <p className="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
             <div className="avatar-container my-2">
-              <img src="https://via.placeholder.com/150" className="avatar-image mr-2"></img>
+              <img src="https://via.placeholder.com/150" className="avatar-image" style={ { marginRight: '10px', } }></img>
               <span className="avatar-title">Filip Jerga</span>
             </div>
           </a>
@@ -92,14 +92,14 @@ const PageHome = () => {
             </div>
             <p className="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
             <div className="avatar-container my-2">
-              <img src="https://via.placeholder.com/150" className="avatar-image mr-2"></img>
+              <img src="https://via.placeholder.com/150" className="avatar-image" style={ { marginRight: '10px', } }></img>
               <span className="avatar-title">Filip Jerga</span>
             </div>
           </a>
         </div>
       </section>
 
-      <a href="" className="btn btn-main bg-blue ttu">See More Posts</a>
+      <a href="" className="btn btn-main bg-blue ttu mb-5">See More Posts</a>
 
       { /* REPLIER STARTS */ }
       { /* <div className='reply-controls is-open'> */ }

@@ -1,10 +1,14 @@
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 import style from './SinglePortfolio.module.scss';
 
-const SinglePortfolio = ( { portfolio, } ) => {
+const PageSinglePortfolio = ( {
+  portfolio,
+} ) => {
 
-  const diff = new Date( portfolio.endDate ).getTime() - new Date( portfolio.startDate ).getTime();
+  // const diff = new Date( portfolio.endDate ).getTime() - new Date( portfolio.startDate ).getTime();
+  const diff = 0;
 
   return (
     <div className={ `portfolio-detail ${ style.SinglePortfolio }` }>
@@ -47,11 +51,12 @@ const SinglePortfolio = ( { portfolio, } ) => {
   );
 };
 
-export default SinglePortfolio;
+export default PageSinglePortfolio;
 
 export const getStaticPaths = async () => {
   const pathsData = [];
-  const portfolios = await fetchPortfolioIds();
+  // const portfolios = await fetchPortfolioIds();
+  const portfolios = [ { _id: '1', }, { _id: '2', }, ];
 
   portfolios.forEach( item => {
     pathsData.push( { params: { id: item._id, }, } );
@@ -68,13 +73,20 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ( { params, } ) => {
   // const { params } = context;
   // console.log( 'SinglePortfolio -> getStaticProps:', params );
-  const portfolio = await fetchPortfolioById( params.id );
+  // const portfolio = await fetchPortfolioById( params.id );
+
+  const portfolio = {
+    title: 'Title',
+    jobTitle: 'jobTitle',
+    company: 'company',
+    location: 'location',
+  };
 
   return {
     props: {
       portfolio,
     },
-    revalidate: 1,
+    // revalidate: 1,
   };
 };
 

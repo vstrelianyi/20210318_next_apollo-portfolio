@@ -1,4 +1,4 @@
-const ForumCategories = () => {
+const PageForumCategories = () => {
   return (
     <>
       <section className="section-title">
@@ -73,4 +73,4 @@ const ForumCategories = () => {
   );
 };
 
-export default ForumCategories;
+export default PageForumCategories;

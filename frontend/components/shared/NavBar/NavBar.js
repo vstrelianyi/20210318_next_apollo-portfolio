@@ -1,8 +1,8 @@
-import styles from './AppNavbar.module.scss';
+import styles from './NavBar.module.scss';
 import { Nav, Navbar  } from 'react-bootstrap';
 import Link from 'next/link';
 
-const AppNavbar = ( { navItems, } ) => {
+const NavBar = ( { navItems, } ) => {
   return (
     <div className={ `navbar-wrapper ${ styles.AppNavbar }` }>
 
@@ -32,4 +32,4 @@ const AppNavbar = ( { navItems, } ) => {
   );
 };
 
-export default AppNavbar;
+export default NavBar;
