@@ -2,25 +2,26 @@ html,body{
 	height: 100%;
 	#__next{
 		height: 100%;
+
+		.portfolio-app{
+			display: flex;
+			flex-direction: column;
+			min-height: 100%;
+			// max-height: 100vh;
+			>header{
+				flex-shrink: 1;
+				display: flex;
+			}
+			>main{
+				flex-grow: 1;
+				display: flex;
+				flex-direction: column;
+			}
+			>footer{
+				flex-shrink: 1;
+				display: flex;
+			}
+		}
 	}
 }
 
-.portfolio-app{
-	display: flex;
-	flex-direction: column;
-	min-height: 100%;
-	// max-height: 100vh;
-	>header{
-		flex-shrink: 1;
-		display: flex;
-	}
-	>main{
-		flex-grow: 1;
-		display: flex;
-		flex-direction: column;
-	}
-	>footer{
-		flex-shrink: 1;
-		display: flex;
-	}
-}

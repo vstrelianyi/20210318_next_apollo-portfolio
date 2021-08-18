@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
     "dev-next": "next",
-    "server": "cross-env NODE_OPTIONS='--inspect' nodemon --watch server server/index.js",
-    "server-old": "cross-env NODE_OPTIONS='--inspect' node server/index.js",
+    "server": "nodemon --inspect --watch server server/index.js",
+    "server-old1": "cross-env NODE_OPTIONS='--inspect' nodemon --watch server server/index.js",
+    "server-old2": "cross-env NODE_OPTIONS='--inspect' node server/index.js",
     "build": "next build",
     "start": "next start"
   },
@@ -23,22 +24,22 @@
   },
   "homepage": "https://github.com/vstrelianyi/20210318_next_apollo-portfolio#readme",
   "dependencies": {
-    "apollo-server-express": "^2.21.2",
+    "apollo-server-express": "^3.1.2",
     "axios": "^0.21.1",
-    "bootstrap": "^4.6.0",
+    "bootstrap": "^5.1.0",
     "cross-env": "^7.0.3",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
-    "graphql": "^15.5.0",
-    "next": "^10.0.9",
-    "react": "^17.0.1",
-    "react-bootstrap": "^1.5.2",
-    "react-dom": "^17.0.1",
-    "sass": "^1.32.8"
+    "graphql": "^15.5.1",
+    "next": "^11.1.0",
+    "react": "^17.0.2",
+    "react-bootstrap": "^1.6.1",
+    "react-dom": "^17.0.2",
+    "sass": "^1.38.0"
   },
   "devDependencies": {
-    "eslint": "^7.22.0",
+    "eslint": "^7.32.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-react": "^7.22.0"
+    "eslint-plugin-react": "^7.24.0"
   }
 }
