@@ -1,6 +1,6 @@
 import Navbar from '@/components/shared/Navbar';
 
-const Posts = ( { post, } ) => {
+const PagePosts = ( { post, } ) => {
   return (
     <>
       <Navbar/>
@@ -137,7 +137,7 @@ const Posts = ( { post, } ) => {
 
 };
 
-export default Posts;
+export default PagePosts;
 
 export const getStaticPaths = async () => {
   const pathsData = [ { params: { post: 'general', }, }, ];

@@ -1,7 +1,6 @@
 const Topics = ( { category, } ) => {
   return (
     <>
-      <h1>SinglePortfolio { category.id }</h1>
       <section className="section-title">
         <div className="px-2">
           <div className="pt-5 pb-4">
