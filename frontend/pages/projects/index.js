@@ -3,24 +3,24 @@ import Link from 'next/link';
 
 import { useState } from 'react';
 
-import stylePortfolio from './Portfolios.module.scss';
-import stylePortfolioCard from './PortfolioCard.module.scss';
+import styleProjects from './Projects.module.scss';
+import styleProjectCard from './ProjectCard.module.scss';
 
-const PagePortfolios = ( { data, } ) => {
+const PageProjects = ( { data, } ) => {
 
-  const [ portfolios, setPortfolios, ] = useState( data.portfolios );
+  const [ projects, setProjects, ] = useState( data.projects );
 
   const handleCreatePortfolioBtnClick = async () => {
     const newPortfolio = await createPortfolio();
-    setPortfolios( [ ...portfolios, newPortfolio, ] );
+    setProjects( [ ...projects, newPortfolio, ] );
   };
 
-  const handleUpdatePortfolioBtnClick = async ( id ) => {
-    const updatedPortfolio = await updatePortfolio( id );
-    const index = portfolios.findIndex( portfolio => portfolio._id === id );
-    const newPortfolios = [ ...portfolios, ];
-    newPortfolios[index] = updatedPortfolio;
-    setPortfolios( newPortfolios );
+  const handleUpdateProjectBtnClick = async ( id ) => {
+    const updatedProjects = await updateProject( id );
+    const index = projects.findIndex( portfolio => portfolio._id === id );
+    const newProjects = [ ...projects, ];
+    newProjects[index] = updatedProjects;
+    setProjects( newProjects );
   };
 
   return (
@@ -28,19 +28,19 @@ const PagePortfolios = ( { data, } ) => {
       <section className="section-title">
         <div className="px-2">
           <div className="pt-5 pb-4">
-            <h1>Portfolios</h1>
+            <h1>Projects</h1>
           </div>
         </div>
-        <button className="btn btn-primary" onClick={ handleCreatePortfolioBtnClick }>Create portfolio</button>
+        <button className="btn btn-primary" onClick={ handleCreatePortfolioBtnClick }>Create project</button>
       </section>
 
-      <section className={ `${ stylePortfolio.Portfolios } pb-5` }>
+      <section className={ `${ styleProjects.Projects } pb-5` }>
         <div className="row">
-          { portfolios.length > 0 && portfolios.map( portfolio => <PortfolioCard key={ portfolio._id } portfolio={ portfolio } handleUpdatePortfolioBtnClick={ handleUpdatePortfolioBtnClick }/> ) }
+          { projects.length > 0 && projects.map( project => <ProjectCard key={ project._id } project={ project } handleUpdateProjectBtnClick={ handleUpdateProjectBtnClick }/> ) }
         </div>
       </section>
 
-      <a href="" className="btn btn-main bg-blue ttu">See More Portfolios</a>
+      <a href="" className="btn btn-main bg-blue ttu">See More Projects</a>
       { /* <section className="section-title">
         <div className="px-2">
           <div className="pt-5 pb-4">
@@ -52,26 +52,26 @@ const PagePortfolios = ( { data, } ) => {
   );
 };
 
-export default PagePortfolios;
+export default PageProjects;
 
-const PortfolioCard = ( { portfolio, handleUpdatePortfolioBtnClick, } ) => {
+const ProjectCard = ( { project, handleUpdatePortfolioBtnClick, } ) => {
   return (
     <div className="col-md-4">
-      <Link href={ `/portfolio/${ portfolio._id }` }>
-        <a className={ `PortfolioCard ${ stylePortfolioCard.PortfolioCard }` }>
+      <Link href={ `/projects/${ project._id }` }>
+        <a className={ `ProjectCard ${ styleProjectCard.ProjectCard }` }>
           <div className="card subtle-shadow no-border">
             <div className="card-body">
-              <h5 className="card-title">{ portfolio.title }</h5>
-              <h6 className="card-subtitle mb-2 text-muted">{ portfolio.jobTitle }</h6>
-              <p className="card-text fs-2">{ portfolio.description }</p>
+              <h5 className="card-title">{ project.title }</h5>
+              <h6 className="card-subtitle mb-2 text-muted">{ project.jobTitle }</h6>
+              <p className="card-text fs-2">{ project.description }</p>
             </div>
             <div className="card-footer no-border">
-              <small className="text-muted">{ `${ portfolio.startDate } - ${ portfolio.endDate }` }</small>
+              <small className="text-muted">{ `${ project.startDate } - ${ project.endDate }` }</small>
             </div>
           </div>
         </a>
       </Link>
-      <button className="btn btn-warning" onClick={ () => handleUpdatePortfolioBtnClick( portfolio._id ) }>Update Portfolio</button>
+      <button className="btn btn-warning" onClick={ () => handleUpdatePortfolioBtnClick( project._id ) }>Update Project</button>
     </div>
   );
 };
@@ -79,22 +79,22 @@ const PortfolioCard = ( { portfolio, handleUpdatePortfolioBtnClick, } ) => {
 export const getStaticProps = async () => {
   // console.log( 'getStaticProps Portfolio' );
   // const portfolios = await fetchPortfolios();
-  const portfolios = [
-    { id: 0, title: 'Portfolio 1', },
-    { id: 1, title: 'Portfolio 2', },
+  const projects = [
+    { id: 0, title: 'Project 1', },
+    { id: 1, title: 'Project 2', },
   ];
 
   return {
     props: {
       data: {
-        portfolios,
+        projects,
       },
     },
     revalidate: 1,
   };
 };
 
-const updatePortfolio = ( id ) => {
+const updateProject = ( id ) => {
   const query = `
 		mutation updatePortfolioItem {
 			updatePortfolio(
@@ -129,10 +129,10 @@ const updatePortfolio = ( id ) => {
     .then( data => data.updatePortfolio );
 };
 
-const createPortfolio = () => {
+const createProject = () => {
   const query = `
-		mutation CreatePortfolioItem {
-			createPortfolio(
+		mutation CreateProjectItem {
+			createProject(
 				input: {
 					title: "new title"
 					company: "new company"
@@ -163,10 +163,10 @@ const createPortfolio = () => {
     .then( data => data.createPortfolio );
 };
 
-const fetchPortfolios = () => {
+const fetchProjects = () => {
   const query = `
-		query Portfolios{
-			portfolios {
+		query Projects{
+			projects {
 				_id
 				title
 				companyWebsite

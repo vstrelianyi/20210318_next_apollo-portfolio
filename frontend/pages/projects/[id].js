@@ -1,34 +1,34 @@
 import axios from 'axios';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 
-import style from './SinglePortfolio.module.scss';
+import style from './SingleProject.module.scss';
 
-const PageSinglePortfolio = ( {
-  portfolio,
+const PageSingleProject = ( {
+  project,
 } ) => {
 
   // const diff = new Date( portfolio.endDate ).getTime() - new Date( portfolio.startDate ).getTime();
   const diff = 0;
 
   return (
-    <div className={ `portfolio-detail ${ style.SinglePortfolio }` }>
+    <div className={ `portfolio-detail ${ style.SingleProject }` }>
       <div className="container">
 
         <div className="jumbotron">
-          <h1 className="display-3">{ portfolio.title }</h1>
-          <p className="lead">{ portfolio.jobTitle }</p>
+          <h1 className="display-3">{ project.title }</h1>
+          <p className="lead">{ project.jobTitle }</p>
           <p>
-            <a className="btn btn-lg btn-success" href="#" role="button">{ portfolio.company }</a>
+            <a className="btn btn-lg btn-success" href="#" role="button">{ project.company }</a>
           </p>
         </div>
 
         <div className="row marketing">
           <div className="col-lg-6">
             <h4 className="title">Location</h4>
-            <p className="text">{ portfolio.location }</p>
+            <p className="text">{ project.location }</p>
 
             <h4 className="title">Start Date</h4>
-            <p className="text">{ portfolio.startDate }</p>
+            <p className="text">{ project.startDate }</p>
           </div>
 
           <div className="col-lg-6">
@@ -37,12 +37,12 @@ const PageSinglePortfolio = ( {
             <p className="text">{ Math.ceil( diff / ( 1000 * 3600 * 24 ) ) }</p>
 
             <h4 className="title">End Date</h4>
-            <p className="text">{ portfolio.endDate }</p>
+            <p className="text">{ project.endDate }</p>
           </div>
           <div className="col-md-12">
             <hr />
             <h4 className="title">Description</h4>
-            <p>{ portfolio.description }</p>
+            <p>{ project.description }</p>
           </div>
         </div>
       </div>
@@ -51,7 +51,7 @@ const PageSinglePortfolio = ( {
   );
 };
 
-export default PageSinglePortfolio;
+export default PageSingleProject;
 
 export const getStaticPaths = async () => {
   const pathsData = [];
@@ -75,7 +75,7 @@ export const getStaticProps = async ( { params, } ) => {
   // console.log( 'SinglePortfolio -> getStaticProps:', params );
   // const portfolio = await fetchPortfolioById( params.id );
 
-  const portfolio = {
+  const project = {
     title: 'Title',
     jobTitle: 'jobTitle',
     company: 'company',
@@ -84,16 +84,16 @@ export const getStaticProps = async ( { params, } ) => {
 
   return {
     props: {
-      portfolio,
+      project,
     },
     // revalidate: 1,
   };
 };
 
-const fetchPortfolioIds = () => {
+const fetchProjectIds = () => {
   const query = `
-		query PortfoliosIds{
-			portfolios{
+		query ProjectIds{
+			projects{
 				_id
 			}
 		}
@@ -110,7 +110,7 @@ const fetchPortfolioIds = () => {
     } );
 };
 
-const fetchPortfolioById = ( id ) => {
+const fetchProjectById = ( id ) => {
   const query = `
 		query Portfolio( $id: ID){
 			portfolio( id: $id ) {
