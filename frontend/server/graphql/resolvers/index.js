@@ -1,5 +1,5 @@
 const data = {
-  portfolios: [
+  projects: [
     {
       _id: 'sad87da79',
       title: 'Job in Netcentric',
@@ -36,34 +36,34 @@ const data = {
   ],
 };
 
-exports.portfolioQueries = {
+exports.projectQueries = {
   hello: () => {
     return 'Hello world';
   },
-  portfolio: ( root, { id, } ) => {
-    const portfolio = data.portfolios.find( portfolio => portfolio._id === id );
+  project: ( root, { id, } ) => {
+    const project = data.projects.find( project => project._id === id );
 
-    return portfolio !== undefined ? portfolio : [];
+    return project !== undefined ? project : [];
   },
-  portfolios: () => {
-    return data.portfolios;
+  projects: () => {
+    return data.projects;
   },
 };
 
-exports.portfolioMutations = {
-  createPortfolio: ( root, { input, } ) => {
+exports.projectMutations = {
+  createProject: ( root, { input, } ) => {
     const _id = require( 'crypto' ).randomBytes( 10 ).toString( 'hex' );
-    const newPortfolio = { _id, ...input, };
-    data.portfolios.push( newPortfolio );
+    const newProject = { _id, ...input, };
+    data.projects.push( newProject );
 
-    return newPortfolio;
+    return newProject;
   },
-  updatePortfolio: ( root, { id, input, } ) => {
-    const index = data.portfolios.findIndex( portfolio => portfolio._id === id );
-    const oldPortfolio = data.portfolios[index];
-    const updatedPortfolio = { ...oldPortfolio, ...input, };
-    data.portfolios[index] = updatedPortfolio;
+  updateProject: ( root, { id, input, } ) => {
+    const index = data.projects.findIndex( project => project._id === id );
+    const oldProject = data.projects[index];
+    const updatedProject = { ...oldProject, ...input, };
+    data.projects[index] = updatedProject;
 
-    return updatedPortfolio;
+    return updatedProject;
   },
 };

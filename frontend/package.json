@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
     "dev-next": "next",
-    "server": "nodemon --inspect --watch server server/index.js",
+    "server": "nodemon --inspect --trace-warnings --watch server server/index.js",
     "server-old1": "cross-env NODE_OPTIONS='--inspect' nodemon --watch server server/index.js",
     "server-old2": "cross-env NODE_OPTIONS='--inspect' node server/index.js",
     "build": "next build",

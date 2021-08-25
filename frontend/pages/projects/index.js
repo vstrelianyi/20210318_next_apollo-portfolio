@@ -1,23 +1,22 @@
 import axios from 'axios';
-import Link from 'next/link';
 
 import { useState } from 'react';
 
 import styleProjects from './Projects.module.scss';
-import styleProjectCard from './ProjectCard.module.scss';
+import ProjectCard from '@/components/Projects/ProjectCard/ProjectCard';
 
 const PageProjects = ( { data, } ) => {
 
   const [ projects, setProjects, ] = useState( data.projects );
 
-  const handleCreatePortfolioBtnClick = async () => {
-    const newPortfolio = await createPortfolio();
-    setProjects( [ ...projects, newPortfolio, ] );
+  const handleCreateProjectBtnClick = async () => {
+    const newProject = await createProject();
+    setProjects( [ ...projects, newProject, ] );
   };
 
   const handleUpdateProjectBtnClick = async ( id ) => {
     const updatedProjects = await updateProject( id );
-    const index = projects.findIndex( portfolio => portfolio._id === id );
+    const index = projects.findIndex( project => project._id === id );
     const newProjects = [ ...projects, ];
     newProjects[index] = updatedProjects;
     setProjects( newProjects );
@@ -31,12 +30,17 @@ const PageProjects = ( { data, } ) => {
             <h1>Projects</h1>
           </div>
         </div>
-        <button className="btn btn-primary" onClick={ handleCreatePortfolioBtnClick }>Create project</button>
+        <button className="btn btn-primary" onClick={ handleCreateProjectBtnClick }>Create project</button>
       </section>
 
       <section className={ `${ styleProjects.Projects } pb-5` }>
         <div className="row">
-          { projects.length > 0 && projects.map( project => <ProjectCard key={ project._id } project={ project } handleUpdateProjectBtnClick={ handleUpdateProjectBtnClick }/> ) }
+          { projects.length > 0 && projects.map( project =>
+            <div className="col-md-4" key={ project._id }>
+              <ProjectCard project={ project } handleUpdateProjectBtnClick={ handleUpdateProjectBtnClick }/>
+              <button className="btn btn-warning" onClick={ () => handleUpdateProjectBtnClick( project._id ) }>Update Project</button>
+            </div> )
+          }
         </div>
       </section>
 
@@ -54,35 +58,8 @@ const PageProjects = ( { data, } ) => {
 
 export default PageProjects;
 
-const ProjectCard = ( { project, handleUpdatePortfolioBtnClick, } ) => {
-  return (
-    <div className="col-md-4">
-      <Link href={ `/projects/${ project._id }` }>
-        <a className={ `ProjectCard ${ styleProjectCard.ProjectCard }` }>
-          <div className="card subtle-shadow no-border">
-            <div className="card-body">
-              <h5 className="card-title">{ project.title }</h5>
-              <h6 className="card-subtitle mb-2 text-muted">{ project.jobTitle }</h6>
-              <p className="card-text fs-2">{ project.description }</p>
-            </div>
-            <div className="card-footer no-border">
-              <small className="text-muted">{ `${ project.startDate } - ${ project.endDate }` }</small>
-            </div>
-          </div>
-        </a>
-      </Link>
-      <button className="btn btn-warning" onClick={ () => handleUpdatePortfolioBtnClick( project._id ) }>Update Project</button>
-    </div>
-  );
-};
-
 export const getStaticProps = async () => {
-  // console.log( 'getStaticProps Portfolio' );
-  // const portfolios = await fetchPortfolios();
-  const projects = [
-    { id: 0, title: 'Project 1', },
-    { id: 1, title: 'Project 2', },
-  ];
+  const projects = await fetchProjects();
 
   return {
     props: {
@@ -90,14 +67,47 @@ export const getStaticProps = async () => {
         projects,
       },
     },
-    revalidate: 1,
+    // revalidate: 1,
   };
+};
+
+const serverURL = 'http://localhost:3000/graphql';
+
+const fetchProjects = () => {
+  const query = `
+		query Projects{
+			projects {
+				_id
+				title
+				company
+				companyWebsite
+				location
+				jobTitle
+				description
+				startDate
+				endDate
+			}
+		}
+	`;
+
+  return axios.post( serverURL, {  query: query, } )
+    .then( response => {
+      return response.data.data.projects;
+    } )
+    .then( projects => {
+      return projects;
+    } )
+    .catch( error => {
+      console.log( error );
+    } )
+  ;
+
 };
 
 const updateProject = ( id ) => {
   const query = `
-		mutation updatePortfolioItem {
-			updatePortfolio(
+		mutation updateProjectItem {
+			updateProject(
 				id: "${ id }",
 				input: {
 					title: "Updated title"
@@ -124,9 +134,9 @@ const updateProject = ( id ) => {
 		}
 	`;
 
-  return axios.post( 'http://localhost:3000/graphql', { query, } )
+  return axios.post( serverURL, { query, } )
     .then( ( { data: graph, } ) => graph.data )
-    .then( data => data.updatePortfolio );
+    .then( data => data.updateProject );
 };
 
 const createProject = () => {
@@ -158,29 +168,7 @@ const createProject = () => {
 		}
 	`;
 
-  return axios.post( 'http://localhost:3000/graphql', { query, } )
+  return axios.post( serverURL, { query, } )
     .then( ( { data: graph, } ) => graph.data )
-    .then( data => data.createPortfolio );
-};
-
-const fetchProjects = () => {
-  const query = `
-		query Projects{
-			projects {
-				_id
-				title
-				companyWebsite
-				location
-				jobTitle
-				description
-				startDate
-				endDate
-			}
-		}
-	`;
-
-  return axios.post( 'http://localhost:3000/graphql', { query, } )
-    .then(	( { data: graph, } ) => {
-      return graph.data.portfolios;
-    } );
+    .then( data => data.createProject );
 };
