@@ -69,7 +69,7 @@ app.prepare().then( () => {
 
 		type Query{
 			hello: String
-			project: Project
+			project( id: ID ): Project
 			projects: [Project]
 		}
 	` );
@@ -77,7 +77,11 @@ app.prepare().then( () => {
   // the root provides a resolver for each API endpoint
   const root = {
     hello: () => 'Hello World',
-    project: () => data.projects[0],
+    project: ( { id, } ) => {
+      const portfolio = data.projects.find( project => project._id === id );
+
+      return portfolio;
+    },
     projects: () => data.projects,
   };
 
