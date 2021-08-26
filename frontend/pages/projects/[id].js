@@ -104,7 +104,7 @@ const fetchProjectIds = () => {
 
 const fetchProjectById = ( id ) => {
   const query = `
-		query Project( $id: ID){
+		query Project( $id: ID ){
 			project( id: $id ) {
 				_id
 				title

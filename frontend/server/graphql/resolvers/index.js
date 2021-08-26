@@ -1,3 +1,4 @@
+
 const data = {
   projects: [
     {
@@ -36,34 +37,20 @@ const data = {
   ],
 };
 
-exports.projectQueries = {
-  hello: () => {
-    return 'Hello world';
-  },
-  project: ( root, { id, } ) => {
-    const project = data.projects.find( project => project._id === id );
+exports.projectResolvers = {
+  hello: () => 'Hello World',
+  project: ( { id, } ) => {
+    const portfolio = data.projects.find( project => project._id === id );
 
-    return project !== undefined ? project : [];
+    return portfolio;
   },
-  projects: () => {
-    return data.projects;
-  },
-};
-
-exports.projectMutations = {
-  createProject: ( root, { input, } ) => {
+  projects: () => data.projects,
+  createProject: ( { input, } ) => {
     const _id = require( 'crypto' ).randomBytes( 10 ).toString( 'hex' );
-    const newProject = { _id, ...input, };
+    const newProject = { ...input, };
+    newProject._id = _id;
     data.projects.push( newProject );
 
     return newProject;
-  },
-  updateProject: ( root, { id, input, } ) => {
-    const index = data.projects.findIndex( project => project._id === id );
-    const oldProject = data.projects[index];
-    const updatedProject = { ...oldProject, ...input, };
-    data.projects[index] = updatedProject;
-
-    return updatedProject;
   },
 };
