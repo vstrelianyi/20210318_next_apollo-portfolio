@@ -53,12 +53,13 @@ const PageSingleProject = ( {
 
 export default PageSingleProject;
 
+const serverURL = 'http://localhost:3000/graphql';
+
 export const getStaticPaths = async () => {
   const pathsData = [];
-  // const portfolios = await fetchPortfolioIds();
-  const portfolios = [ { _id: '1', }, { _id: '2', }, ];
+  const projects = await fetchProjectIds();
 
-  portfolios.forEach( item => {
+  projects.forEach( item => {
     pathsData.push( { params: { id: item._id, }, } );
   } );
 
@@ -72,15 +73,8 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ( { params, } ) => {
   // const { params } = context;
-  // console.log( 'SinglePortfolio -> getStaticProps:', params );
-  // const portfolio = await fetchPortfolioById( params.id );
-
-  const project = {
-    title: 'Title',
-    jobTitle: 'jobTitle',
-    company: 'company',
-    location: 'location',
-  };
+  // console.log( params );
+  const project = await fetchProjectById( params.id );
 
   return {
     props: {
@@ -100,20 +94,20 @@ const fetchProjectIds = () => {
 	`;
 
   return axios.post(
-    'http://localhost:3000/graphql',
+    serverURL,
     {
       query,
     }
   )
-    .then(	( { data: graph, } ) => {
-      return graph.data.portfolios;
+    .then( response => {
+      return response.data.data.projects;
     } );
 };
 
 const fetchProjectById = ( id ) => {
   const query = `
-		query Portfolio( $id: ID){
-			portfolio( id: $id ) {
+		query Project( $id: ID){
+			project( id: $id ) {
 				_id
 				title
 				companyWebsite
@@ -125,16 +119,18 @@ const fetchProjectById = ( id ) => {
 			}
 		}
 	`;
-  const variables = { id, };
+  const variables = {
+    id: id,
+  };
 
   return axios.post(
-    'http://localhost:3000/graphql',
+    serverURL,
     {
       query,
       variables,
     }
   )
-    .then(	( { data: graph, } ) => {
-      return graph.data.portfolio;
+    .then( response => {
+      return response.data.data.project;
     } );
 };
