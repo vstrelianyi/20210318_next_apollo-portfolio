@@ -1,9 +1,7 @@
 import axios from 'axios';
-// import { useRouter } from 'next/router';
+import style from './Project.module.scss';
 
-import style from './SingleProject.module.scss';
-
-const PageSingleProject = ( {
+const PageProject = ( {
   project,
 } ) => {
 
@@ -11,7 +9,7 @@ const PageSingleProject = ( {
   const diff = 0;
 
   return (
-    <div className={ `portfolio-detail ${ style.SingleProject }` }>
+    <div className={ `portfolio-detail ${ style.Project }` }>
       <div className="container">
 
         <div className="jumbotron">
@@ -51,7 +49,7 @@ const PageSingleProject = ( {
   );
 };
 
-export default PageSingleProject;
+export default PageProject;
 
 const serverURL = 'http://localhost:3000/graphql';
 
