@@ -1,3 +1,4 @@
+// ! - non-nullable
 exports.projectTypes = `
 	type Project{
 		_id: ID!

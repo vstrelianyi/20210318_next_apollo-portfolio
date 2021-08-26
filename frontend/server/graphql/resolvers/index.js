@@ -37,15 +37,18 @@ const data = {
   ],
 };
 
-exports.projectResolvers = {
+exports.projectQueries = {
   hello: () => 'Hello World',
-  project: ( { id, } ) => {
+  project: ( root, { id, } ) => {
     const portfolio = data.projects.find( project => project._id === id );
 
     return portfolio;
   },
   projects: () => data.projects,
-  createProject: ( { input, } ) => {
+};
+
+exports.projectMutations = {
+  createProject: ( root, { input, } ) => {
     const _id = require( 'crypto' ).randomBytes( 10 ).toString( 'hex' );
     const newProject = { ...input, };
     newProject._id = _id;
