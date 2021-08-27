@@ -27,7 +27,9 @@ app.prepare().then( async () => {
 		}
 
 		type Mutation {
+			updateProject( id: ID, input: ProjectInput ): Project
 			createProject( input: ProjectInput ): Project
+			deleteProject( id: ID ): ID
 		}
 	`;
 

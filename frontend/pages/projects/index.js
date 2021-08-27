@@ -15,10 +15,19 @@ const PageProjects = ( { data, } ) => {
   };
 
   const handleUpdateProjectBtnClick = async ( id ) => {
-    const updatedProjects = await updateProject( id );
+    const updatedProject = await updateProject( id );
     const index = projects.findIndex( project => project._id === id );
     const newProjects = [ ...projects, ];
-    newProjects[index] = updatedProjects;
+    newProjects[index] = updatedProject;
+    setProjects( newProjects );
+  };
+
+  const handleDeleteProjectBtnClick = async ( id ) => {
+    console.log( id );
+    const deletedProjectId = await deleteProject( id );
+    const index = projects.findIndex( project => project._id === deletedProjectId );
+    const newProjects = [ ...projects, ];
+    newProjects.splice( index, 1 );
     setProjects( newProjects );
   };
 
@@ -30,15 +39,22 @@ const PageProjects = ( { data, } ) => {
             <h1>Projects</h1>
           </div>
         </div>
-        <button className="btn btn-primary" onClick={ handleCreateProjectBtnClick }>Create project</button>
+        <button className="btn btn-primary mb-3" onClick={ handleCreateProjectBtnClick }>Create project</button>
       </section>
 
       <section className={ `${ styleProjects.Projects } pb-5` }>
         <div className="row">
           { projects.length > 0 && projects.map( project =>
             <div className="col-md-4" key={ project._id }>
-              <ProjectCard project={ project } handleUpdateProjectBtnClick={ handleUpdateProjectBtnClick }/>
-              <button className="btn btn-warning" onClick={ () => handleUpdateProjectBtnClick( project._id ) }>Update Project</button>
+              <ProjectCard project={ project }/>
+              <button
+                className="btn btn-warning mx-2"
+                onClick={ () => handleUpdateProjectBtnClick( project._id ) }
+              >Update Project</button>
+              <button
+                className="btn btn-danger"
+                onClick={ () => handleDeleteProjectBtnClick( project._id ) }
+              >Delete Project</button>
             </div> )
           }
         </div>
@@ -171,4 +187,16 @@ const createProject = () => {
   return axios.post( serverURL, { query, } )
     .then( ( { data: graph, } ) => graph.data )
     .then( data => data.createProject );
+};
+
+const deleteProject = ( id ) => {
+  const query = `
+		mutation DeleteProjectItem {
+			deleteProject( id: "${ id }" )
+		}
+	`;
+
+  return axios.post( serverURL, { query, } )
+    .then( ( { data: graph, } ) => graph.data )
+    .then( data => data.deleteProject );
 };

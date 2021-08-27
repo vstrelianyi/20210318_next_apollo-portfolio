@@ -56,4 +56,18 @@ exports.projectMutations = {
 
     return newProject;
   },
+  updateProject: ( root, { id, input, } ) => {
+    const index = data.projects.findIndex( project => project._id === id );
+    const oldProject = data.projects[index];
+    const newProject = { ...oldProject, ...input, };
+    data.projects[index] = newProject;
+
+    return newProject;
+  },
+  deleteProject: ( root, { id, } ) => {
+    const index = data.projects.findIndex( project => project._id === id );
+    data.projects.splice( index, 1 );
+
+    return id;
+  },
 };
