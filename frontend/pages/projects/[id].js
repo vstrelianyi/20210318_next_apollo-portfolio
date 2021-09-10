@@ -1,8 +1,8 @@
 import axios from 'axios';
 import style from './Project.module.scss';
 
-import { useQuery, useLazyQuery } from '@apollo/client';
-import GET_PROJECT from '@/queries/index.js';
+import { useLazyQuery } from '@apollo/client';
+import { GET_PROJECT } from '@/queries/index';
 import { useEffect, useState } from 'react';
 
 const PageProject = ( {
@@ -18,7 +18,6 @@ const PageProject = ( {
 
   useEffect( () => {
     getProject( { variables: { id: id, }, } );
-    // console.log( id );
   }, [] );
 
   if ( data && !project ){
@@ -120,36 +119,5 @@ const fetchProjectIds = () => {
   )
     .then( response => {
       return response.data.data.projects;
-    } );
-};
-
-const fetchProjectById = ( id ) => {
-  const query = `
-		query Project( $id: ID ){
-			project( id: $id ) {
-				_id
-				title
-				companyWebsite
-				location
-				jobTitle
-				description
-				startDate
-				endDate
-			}
-		}
-	`;
-  const variables = {
-    id: id,
-  };
-
-  return axios.post(
-    serverURL,
-    {
-      query,
-      variables,
-    }
-  )
-    .then( response => {
-      return response.data.data.project;
     } );
 };

@@ -15,4 +15,19 @@ const GET_PROJECT = gql`
 	}
 `;
 
-export default GET_PROJECT;
+const GET_PROJECTS = gql`
+	query Projects{
+		projects {
+			_id
+			title
+			company
+			companyWebsite
+			location
+			jobTitle
+			description
+			startDate
+			endDate
+		}
+	}
+`;
+export { GET_PROJECT, GET_PROJECTS };

@@ -1,13 +1,28 @@
 import axios from 'axios';
 
-import { useState } from 'react';
+import { useLazyQuery } from '@apollo/client';
+import { GET_PROJECTS } from '@/queries/index';
+import { useEffect, useState } from 'react';
 
 import styleProjects from './Projects.module.scss';
 import ProjectCard from '@/components/Projects/ProjectCard/ProjectCard';
 
-const PageProjects = ( { data, } ) => {
+const PageProjects = () => {
 
-  const [ projects, setProjects, ] = useState( data.projects );
+  const [ projects, setProjects, ] = useState( [] );
+  const [ getProjects, { loading, data, }, ] = useLazyQuery( GET_PROJECTS );
+
+  useEffect( () => {
+    getProjects();
+  }, [] );
+
+  if ( data && data.projects.length > 0 && projects.length === 0 ){
+    setProjects( data.projects );
+  }
+
+  if ( loading ){
+    return <h1>Loading...</h1>;
+  }
 
   const handleCreateProjectBtnClick = async () => {
     const newProject = await createProject();
@@ -75,12 +90,10 @@ const PageProjects = ( { data, } ) => {
 export default PageProjects;
 
 export const getStaticProps = async () => {
-  const projects = await fetchProjects();
 
   return {
     props: {
       data: {
-        projects,
       },
     },
     // revalidate: 1,
@@ -88,37 +101,6 @@ export const getStaticProps = async () => {
 };
 
 const serverURL = 'http://localhost:3000/graphql';
-
-const fetchProjects = () => {
-  const query = `
-		query Projects{
-			projects {
-				_id
-				title
-				company
-				companyWebsite
-				location
-				jobTitle
-				description
-				startDate
-				endDate
-			}
-		}
-	`;
-
-  return axios.post( serverURL, {  query: query, } )
-    .then( response => {
-      return response.data.data.projects;
-    } )
-    .then( projects => {
-      return projects;
-    } )
-    .catch( error => {
-      console.log( error );
-    } )
-  ;
-
-};
 
 const updateProject = ( id ) => {
   const query = `
