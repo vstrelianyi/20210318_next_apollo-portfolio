@@ -5,7 +5,7 @@
 			"@/src/*": [ "/*" ],
 			"@/components/*": [ "components/*" ],
 			"@/utils/*": [ "utils/*" ],
-			"@/queries/*": [ "queries/*" ],
+			"@/queries/*": [ "apollo/queries/*" ],
 			"@/mutations/*": [ "mutations/*" ],
     }
   }

@@ -1,3 +1,5 @@
+import { ApolloProvider, ApolloClient, InMemoryCache  } from '@apollo/client';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@/src/styles/index.scss';
 import '@/src/styles/layout.scss';
@@ -7,24 +9,31 @@ import NavBar from '@/components/shared/NavBar/NavBar';
 import Hero from '@/components/shared/Hero/Hero';
 import Footer from '@/components/shared/Footer/Footer';
 
+const client = new ApolloClient( {
+  uri: 'http://localhost:3000/graphql',
+  cache: new InMemoryCache(),
+} );
+
 const MyApp = ( { Component, pageProps, } ) => {
   // console.log( 'MyApp: ', pageProps );
 
   return (
-    <div className="portfolio-app">
+    <ApolloProvider client={ client }>
+      <div className="portfolio-app">
 
-      <header>
-        <NavBar navItems={ pageProps.navItems }/>
-      </header>
+        <header>
+          <NavBar navItems={ pageProps.navItems }/>
+        </header>
 
-      <main>
-        { Component.name === 'PageHome' && <Hero/> }
-        <div className="container">
-          <Component { ...pageProps }/>
-        </div>
-      </main>
-      <Footer/>
-    </div>
+        <main>
+          { Component.name === 'PageHome' && <Hero/> }
+          <div className="container">
+            <Component { ...pageProps }/>
+          </div>
+        </main>
+        <Footer/>
+      </div>
+    </ApolloProvider>
   );
 };
 

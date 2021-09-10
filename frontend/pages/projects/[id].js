@@ -1,12 +1,33 @@
 import axios from 'axios';
 import style from './Project.module.scss';
 
+import { useQuery, useLazyQuery } from '@apollo/client';
+import GET_PROJECT from '@/queries/index.js';
+import { useEffect, useState } from 'react';
+
 const PageProject = ( {
-  project,
+  id,
 } ) => {
 
   // const diff = new Date( portfolio.endDate ).getTime() - new Date( portfolio.startDate ).getTime();
   const diff = 0;
+
+  const [ project, setProject, ] = useState( null );
+
+  const [ getProject, { loading, data, }, ] = useLazyQuery( GET_PROJECT );
+
+  useEffect( () => {
+    getProject( { variables: { id: id, }, } );
+    // console.log( id );
+  }, [] );
+
+  if ( data && !project ){
+    setProject( data.project );
+  }
+
+  if ( loading || !project ){
+    return <h1>Loading...</h1>;
+  }
 
   return (
     <div className={ `portfolio-detail ${ style.Project }` }>
@@ -72,11 +93,11 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ( { params, } ) => {
   // const { params } = context;
   // console.log( params );
-  const project = await fetchProjectById( params.id );
+  // const project = await fetchProjectById( params.id );
 
   return {
     props: {
-      project,
+      id: params.id,
     },
     // revalidate: 1,
   };
