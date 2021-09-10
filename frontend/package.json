@@ -25,23 +25,23 @@
   "homepage": "https://github.com/vstrelianyi/20210318_next_apollo-portfolio#readme",
   "dependencies": {
     "@apollo/client": "^3.4.10",
-    "apollo-server-express": "^3.2.0",
-    "axios": "^0.21.1",
-    "bootstrap": "^5.1.0",
+    "apollo-server-express": "^3.3.0",
+    "axios": "^0.21.4",
+    "bootstrap": "^5.1.1",
     "cross-env": "^7.0.3",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
-    "graphql": "^15.5.1",
-    "next": "^11.1.0",
+    "graphql": "^15.5.3",
+    "next": "^11.1.2",
     "nodemon": "^2.0.12",
     "react": "^17.0.2",
-    "react-bootstrap": "^1.6.1",
+    "react-bootstrap": "^1.6.3",
     "react-dom": "^17.0.2",
-    "sass": "^1.38.1"
+    "sass": "^1.39.2"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-react": "^7.24.0"
+    "eslint-plugin-react": "^7.25.1"
   }
 }

@@ -1,8 +1,10 @@
 import axios from 'axios';
 
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { GET_PROJECTS } from '@/queries/index';
 import { useEffect, useState } from 'react';
+
+import { CREATE_PROJECT_ITEM } from '@/mutations/index';
 
 import styleProjects from './Projects.module.scss';
 import ProjectCard from '@/components/Projects/ProjectCard/ProjectCard';
@@ -12,11 +14,39 @@ const PageProjects = () => {
   const [ projects, setProjects, ] = useState( [] );
   const [ getProjects, { loading, data, }, ] = useLazyQuery( GET_PROJECTS );
 
+  const [ createProject, ] = useMutation(
+    CREATE_PROJECT_ITEM,
+    {
+      update ( cache, { data, } ) {
+        const { projects, } = cache.readQuery( { query: GET_PROJECTS, } );
+        cache.writeQuery( {
+          query: GET_PROJECTS,
+          data: { projects: [ ...projects, data.createProject, ], },
+        } );
+      },
+    }
+  );
+
+  // const onProjectCreated = ( dataCreated  ) => {
+  //   setProjects( [ ...projects, dataCreated.createProject, ] );
+  // };
+
+  // const [ createProject, ] = useMutation(
+  //   CREATE_PROJECT_ITEM,
+  //   {
+  //     onCompleted: onProjectCreated,
+  //   }
+  // );
+
   useEffect( () => {
     getProjects();
   }, [] );
 
-  if ( data && data.projects.length > 0 && projects.length === 0 ){
+  useEffect( () => {
+    console.log( projects );
+  }, [ projects, ] );
+
+  if ( data && data.projects.length > 0 && ( projects.length === 0 || data.projects.length !== projects.length ) ){
     setProjects( data.projects );
   }
 
@@ -135,40 +165,6 @@ const updateProject = ( id ) => {
   return axios.post( serverURL, { query, } )
     .then( ( { data: graph, } ) => graph.data )
     .then( data => data.updateProject );
-};
-
-const createProject = () => {
-  const query = `
-		mutation CreateProjectItem {
-			createProject(
-				input: {
-					title: "new title"
-					company: "new company"
-					companyWebsite: "new companyWebsite"
-					location: "new location"
-					jobTitle: "new jobTitle"
-					description: "new description"
-					startDate: "01/01/2020"
-					endDate: "01/01/2021"
-				}
-			)
-			{
-				_id
-				title
-				company
-				companyWebsite
-				location
-				jobTitle
-				description
-				startDate
-				endDate
-			}
-		}
-	`;
-
-  return axios.post( serverURL, { query, } )
-    .then( ( { data: graph, } ) => graph.data )
-    .then( data => data.createProject );
 };
 
 const deleteProject = ( id ) => {
