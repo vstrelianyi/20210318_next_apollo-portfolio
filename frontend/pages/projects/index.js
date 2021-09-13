@@ -1,72 +1,55 @@
-import { useLazyQuery, useMutation } from '@apollo/client';
-import { GET_PROJECTS } from '@/queries/index';
 import { useEffect, useState } from 'react';
 
-import { CREATE_PROJECT_ITEM, UPDATE_PROJECT_ITEM, DELETE_PROJECT_ITEM } from '@/mutations/index';
+import { useGetProjects, useUpdateProject, useDeleteProject, useCreateProject } from '@/actions/index';
 
 import styleProjects from './Projects.module.scss';
 import ProjectCard from '@/components/Projects/ProjectCard/ProjectCard';
 
 import withApollo from '@/hoc/withApollo';
 
+import { gql, useQuery } from '@apollo/client';
+
+const GET_PROJECTS = gql`
+	query Projects{
+		projects {
+			_id
+			title
+			company
+			companyWebsite
+			location
+			jobTitle
+			description
+			startDate
+			endDate
+		}
+	}
+`;
+
 const PageProjects = () => {
 
   const [ projects, setProjects, ] = useState( [] );
-  const [ getProjects, { loading, data, }, ] = useLazyQuery( GET_PROJECTS );
-  const [ updateProject, ] = useMutation( UPDATE_PROJECT_ITEM );
-  const [ deleteProject, ] = useMutation(
-    DELETE_PROJECT_ITEM,
-    {
-      update ( cache, { data: { deleteProject, }, } ) {
-        const { projects, } = cache.readQuery( { query: GET_PROJECTS, } );
-        const newProjects = projects.filter( p => p._id !== deleteProject );
-        cache.writeQuery( {
-          query: GET_PROJECTS,
-          data: { projects: newProjects, },
-        } );
-      },
-    }
-  );
+  // const [ getProjects, { loading, data, }, ] = useLazyQuery( GET_PROJECTS );
 
-  const [ createProject, ] = useMutation(
-    CREATE_PROJECT_ITEM,
-    {
-      update ( cache, { data, } ) {
-        const { projects, } = cache.readQuery( { query: GET_PROJECTS, } );
-        cache.writeQuery( {
-          query: GET_PROJECTS,
-          data: { projects: [ ...projects, data.createProject, ], },
-        } );
-      },
-    }
-  );
-
-  // const onProjectCreated = ( dataCreated  ) => {
-  //   setProjects( [ ...projects, dataCreated.createProject, ] );
-  // };
-
-  // const [ createProject, ] = useMutation(
-  //   CREATE_PROJECT_ITEM,
-  //   {
-  //     onCompleted: onProjectCreated,
-  //   }
-  // );
+  // const { data, } = useGetProjects( );
+  const [ updateProject, ] = useUpdateProject();
+  const [ deleteProject, ] = useDeleteProject();
+  const [ createProject, ] = useCreateProject();
 
   useEffect( () => {
-    getProjects();
+    // getProjects();
   }, [] );
 
   useEffect( () => {
     console.log( projects );
   }, [ projects, ] );
 
-  if ( data && data.projects.length > 0 && ( projects.length === 0 || data.projects.length !== projects.length ) ){
-    setProjects( data.projects );
-  }
+  // if ( data && data.projects.length > 0 && ( projects.length === 0 || data.projects.length !== projects.length ) ){
+  //   setProjects( data.projects );
+  // }
 
-  if ( loading ){
-    return <h1>Loading...</h1>;
-  }
+  // if ( loading ){
+  //   return <h1>Loading...</h1>;
+  // }
 
   const handleCreateProjectBtnClick = async () => {
     const newProject = await createProject();
@@ -134,6 +117,7 @@ const PageProjects = () => {
 export default withApollo( PageProjects );
 
 export const getStaticProps = async () => {
+  const { loading, error, data, } = useQuery( GET_PROJECTS );
 
   return {
     props: {
