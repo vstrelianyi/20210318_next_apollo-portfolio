@@ -1,18 +1,32 @@
-import axios from 'axios';
-
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { GET_PROJECTS } from '@/queries/index';
 import { useEffect, useState } from 'react';
 
-import { CREATE_PROJECT_ITEM } from '@/mutations/index';
+import { CREATE_PROJECT_ITEM, UPDATE_PROJECT_ITEM, DELETE_PROJECT_ITEM } from '@/mutations/index';
 
 import styleProjects from './Projects.module.scss';
 import ProjectCard from '@/components/Projects/ProjectCard/ProjectCard';
+
+import withApollo from '@/hoc/withApollo';
 
 const PageProjects = () => {
 
   const [ projects, setProjects, ] = useState( [] );
   const [ getProjects, { loading, data, }, ] = useLazyQuery( GET_PROJECTS );
+  const [ updateProject, ] = useMutation( UPDATE_PROJECT_ITEM );
+  const [ deleteProject, ] = useMutation(
+    DELETE_PROJECT_ITEM,
+    {
+      update ( cache, { data: { deleteProject, }, } ) {
+        const { projects, } = cache.readQuery( { query: GET_PROJECTS, } );
+        const newProjects = projects.filter( p => p._id !== deleteProject );
+        cache.writeQuery( {
+          query: GET_PROJECTS,
+          data: { projects: newProjects, },
+        } );
+      },
+    }
+  );
 
   const [ createProject, ] = useMutation(
     CREATE_PROJECT_ITEM,
@@ -60,16 +74,16 @@ const PageProjects = () => {
   };
 
   const handleUpdateProjectBtnClick = async ( id ) => {
-    const updatedProject = await updateProject( id );
+    const updatedProject = await updateProject( { variables: { id: id, }, } );
+
     const index = projects.findIndex( project => project._id === id );
     const newProjects = [ ...projects, ];
-    newProjects[index] = updatedProject;
+    newProjects[index] = updatedProject.data.updateProject;
     setProjects( newProjects );
   };
 
   const handleDeleteProjectBtnClick = async ( id ) => {
-    console.log( id );
-    const deletedProjectId = await deleteProject( id );
+    const deletedProjectId = await deleteProject( { variables: { id: id, }, } );
     const index = projects.findIndex( project => project._id === deletedProjectId );
     const newProjects = [ ...projects, ];
     newProjects.splice( index, 1 );
@@ -117,7 +131,7 @@ const PageProjects = () => {
   );
 };
 
-export default PageProjects;
+export default withApollo( PageProjects );
 
 export const getStaticProps = async () => {
 
@@ -128,53 +142,4 @@ export const getStaticProps = async () => {
     },
     // revalidate: 1,
   };
-};
-
-const serverURL = 'http://localhost:3000/graphql';
-
-const updateProject = ( id ) => {
-  const query = `
-		mutation updateProjectItem {
-			updateProject(
-				id: "${ id }",
-				input: {
-					title: "Updated title"
-					company: "Updated company"
-					companyWebsite: "Updated companyWebsite"
-					location: "Updated location"
-					jobTitle: "Updated jobTitle"
-					description: "Updated description"
-					startDate: "01/01/2020"
-					endDate: "01/01/2021"
-				}
-			)
-			{
-				_id
-				title
-				company
-				companyWebsite
-				location
-				jobTitle
-				description
-				startDate
-				endDate
-			}
-		}
-	`;
-
-  return axios.post( serverURL, { query, } )
-    .then( ( { data: graph, } ) => graph.data )
-    .then( data => data.updateProject );
-};
-
-const deleteProject = ( id ) => {
-  const query = `
-		mutation DeleteProjectItem {
-			deleteProject( id: "${ id }" )
-		}
-	`;
-
-  return axios.post( serverURL, { query, } )
-    .then( ( { data: graph, } ) => graph.data )
-    .then( data => data.deleteProject );
 };

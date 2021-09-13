@@ -5,6 +5,8 @@ import { useLazyQuery } from '@apollo/client';
 import { GET_PROJECT } from '@/queries/index';
 import { useEffect, useState } from 'react';
 
+import withApollo from '@/hoc/withApollo';
+
 const PageProject = ( {
   id,
 } ) => {
@@ -69,7 +71,7 @@ const PageProject = ( {
   );
 };
 
-export default PageProject;
+export default withApollo( PageProject );
 
 const serverURL = 'http://localhost:3000/graphql';
 
