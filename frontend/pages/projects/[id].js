@@ -1,34 +1,36 @@
 import axios from 'axios';
 import style from './Project.module.scss';
 
+import client from '@/apollo/apollo-client';
+
 import { useLazyQuery } from '@apollo/client';
-import { GET_PROJECT } from '@/queries/index';
+import { GET_PROJECT } from '@/apollo/queries/index';
 import { useEffect, useState } from 'react';
 
-import withApollo from '@/hoc/withApollo';
+import { GET_PROJECT_IDS } from '@/apollo/queries/index';
 
 const PageProject = ( {
-  id,
+  pageData,
 } ) => {
 
   // const diff = new Date( portfolio.endDate ).getTime() - new Date( portfolio.startDate ).getTime();
   const diff = 0;
 
-  const [ project, setProject, ] = useState( null );
+  const [ project, setProject, ] = useState( pageData.project );
 
-  const [ getProject, { loading, data, }, ] = useLazyQuery( GET_PROJECT );
+  // const [ getProject, { loading, data, }, ] = useLazyQuery( GET_PROJECT );
 
-  useEffect( () => {
-    getProject( { variables: { id: id, }, } );
-  }, [] );
+  // useEffect( () => {
+  //   getProject( { variables: { id: id, }, } );
+  // }, [] );
 
-  if ( data && !project ){
-    setProject( data.project );
-  }
+  // if ( data && !project ){
+  //   setProject( data.project );
+  // }
 
-  if ( loading || !project ){
-    return <h1>Loading...</h1>;
-  }
+  // if ( loading || !project ){
+  //   return <h1>Loading...</h1>;
+  // }
 
   return (
     <div className={ `portfolio-detail ${ style.Project }` }>
@@ -71,15 +73,14 @@ const PageProject = ( {
   );
 };
 
-export default withApollo( PageProject );
-
-const serverURL = 'http://localhost:3000/graphql';
+export default PageProject;
 
 export const getStaticPaths = async () => {
   const pathsData = [];
-  const projects = await fetchProjectIds();
+  const { data, } = await client.query( { query: GET_PROJECT_IDS, } );
+  // console.log( 'PageProject: data:', data );
 
-  projects.forEach( item => {
+  data.projects.forEach( item => {
     pathsData.push( { params: { id: item._id, }, } );
   } );
 
@@ -94,32 +95,15 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ( { params, } ) => {
   // const { params } = context;
   // console.log( params );
-  // const project = await fetchProjectById( params.id );
+
+  const { data, } = await client.query( { query: GET_PROJECT, variables: { id: params.id, }, } );
 
   return {
     props: {
-      id: params.id,
+      pageData: {
+        project: data.project,
+      },
     },
     // revalidate: 1,
   };
-};
-
-const fetchProjectIds = () => {
-  const query = `
-		query ProjectIds{
-			projects{
-				_id
-			}
-		}
-	`;
-
-  return axios.post(
-    serverURL,
-    {
-      query,
-    }
-  )
-    .then( response => {
-      return response.data.data.projects;
-    } );
 };

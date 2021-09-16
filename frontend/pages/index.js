@@ -5,7 +5,7 @@ const PageHome = () => {
       <section className="section-title">
         <div className="px-2">
           <div className="pt-5 pb-4">
-            <h1>Portfolios</h1>
+            <h1>Projects</h1>
           </div>
         </div>
       </section>
@@ -51,7 +51,7 @@ const PageHome = () => {
         </div>
       </section>
 
-      <a href="" className="btn btn-main bg-blue ttu mb-5">See More Portfolios</a>
+      <a href="" className="btn btn-main bg-blue ttu mb-5">See More Projects</a>
 
       <section className="section-title">
         <div className="px-2">

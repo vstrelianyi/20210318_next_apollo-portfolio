@@ -1,3 +1,4 @@
+const Project = require( '../../database/models/project' );
 
 const data = {
   projects: [
@@ -39,35 +40,59 @@ const data = {
 
 exports.projectQueries = {
   hello: () => 'Hello World',
-  project: ( root, { id, } ) => {
-    const portfolio = data.projects.find( project => project._id === id );
+  // project: ( root, { id, } ) => {
+  // const project = data.projects.find( project => project._id === id );
 
-    return portfolio;
+  // return project;
+  // },
+
+  project: async ( root, { id, } ) => {
+    return await Project.findById( id );
   },
-  projects: () => data.projects,
+  // projects: () => data.projects,
+  projects: async () => {
+    return await Project.find( {} );
+  },
 };
 
 exports.projectMutations = {
-  createProject: ( root, { input, } ) => {
-    const _id = require( 'crypto' ).randomBytes( 10 ).toString( 'hex' );
-    const newProject = { ...input, };
-    newProject._id = _id;
-    data.projects.push( newProject );
+  // createProject: ( root, { input, } ) => {
+  //   const _id = require( 'crypto' ).randomBytes( 10 ).toString( 'hex' );
+  //   const newProject = { ...input, };
+  //   newProject._id = _id;
+  //   data.projects.push( newProject );
 
-    return newProject;
+  //   return newProject;
+  // },
+  createProject: async ( root, { input, } ) => {
+    const createdProject = await Project.create( input );
+
+    return createdProject;
   },
-  updateProject: ( root, { id, input, } ) => {
-    const index = data.projects.findIndex( project => project._id === id );
-    const oldProject = data.projects[index];
-    const newProject = { ...oldProject, ...input, };
-    data.projects[index] = newProject;
+  // updateProject: ( root, { id, input, } ) => {
+  //   const index = data.projects.findIndex( project => project._id === id );
+  //   const oldProject = data.projects[index];
+  //   const newProject = { ...oldProject, ...input, };
+  //   data.projects[index] = newProject;
 
-    return newProject;
+  //   return newProject;
+  // },
+  updateProject: async ( root, { id, input, } ) => {
+    const updatedProject = await Project.findOneAndUpdate( { _id: id, }, input, { new: true, } );
+
+    return updatedProject;
   },
-  deleteProject: ( root, { id, } ) => {
-    const index = data.projects.findIndex( project => project._id === id );
-    data.projects.splice( index, 1 );
+  // deleteProject: async ( root, { id, } ) => {
+  //   const index = data.projects.findIndex( project => project._id === id );
+  //   const deletedProject = data.projects[index];
+  //   data.projects.splice( index, 1 );
 
-    return id;
+  //   return deletedProject;
+  // },
+
+  deleteProject: async ( root, { id, } ) => {
+    const deletedProject = await Project.findOneAndRemove( { _id: id, } );
+
+    return deletedProject;
   },
 };

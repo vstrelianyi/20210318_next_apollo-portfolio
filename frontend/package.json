@@ -10,7 +10,8 @@
     "server-old1": "cross-env NODE_OPTIONS='--inspect' nodemon --watch server server/index.js",
     "server-old2": "cross-env NODE_OPTIONS='--inspect' node server/index.js",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+		"populateDb": "node server/fakeDb/populate.js"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,7 @@
   },
   "homepage": "https://github.com/vstrelianyi/20210318_next_apollo-portfolio#readme",
   "dependencies": {
-    "@apollo/client": "^3.4.10",
+    "@apollo/client": "^3.4.11",
     "apollo-server-express": "^3.3.0",
     "axios": "^0.21.4",
     "bootstrap": "^5.1.1",
@@ -32,13 +33,14 @@
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
     "graphql": "^15.5.3",
+    "mongoose": "^6.0.6",
     "next": "^11.1.2",
     "next-with-apollo": "^5.2.1",
     "nodemon": "^2.0.12",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.3",
     "react-dom": "^17.0.2",
-    "sass": "^1.39.2"
+    "sass": "^1.40.1"
   },
   "devDependencies": {
     "eslint": "^7.32.0",

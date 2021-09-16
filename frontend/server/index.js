@@ -14,6 +14,9 @@ const handle = app.getRequestHandler();
 const { projectQueries, projectMutations, } = require( './graphql/resolvers' );
 const { projectTypes, } = require( './graphql/types' );
 
+// Connect to DB
+require( './database' ).connect();
+
 app.prepare().then( async () => {
   const server = express();
 
@@ -29,7 +32,7 @@ app.prepare().then( async () => {
 		type Mutation {
 			updateProject( id: ID, input: ProjectInput ): Project
 			createProject( input: ProjectInput ): Project
-			deleteProject( id: ID ): ID
+			deleteProject( id: ID ): Project
 		}
 	`;
 

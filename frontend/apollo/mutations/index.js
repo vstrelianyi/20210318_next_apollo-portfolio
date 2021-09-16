@@ -10,8 +10,8 @@ const CREATE_PROJECT_ITEM = gql`
 				location: "new location"
 				jobTitle: "new jobTitle"
 				description: "new description"
-				startDate: "01/01/2020"
-				endDate: "01/01/2021"
+				startDate: "2012-12-12T23:59Z"
+				endDate: "2014-11-12T23:59Z"
 			}
 		)
 		{
@@ -39,8 +39,8 @@ const UPDATE_PROJECT_ITEM = gql`
 				location: "Updated location"
 				jobTitle: "Updated jobTitle"
 				description: "Updated description"
-				startDate: "01/01/2020"
-				endDate: "01/01/2021"
+				startDate: "2012-12-12T23:59Z"
+				endDate: "2014-11-12T23:59Z"
 			}
 		)
 		{
@@ -59,7 +59,9 @@ const UPDATE_PROJECT_ITEM = gql`
 
 const DELETE_PROJECT_ITEM = gql`
 	mutation DeleteProjectItem( $id: ID ) {
-		deleteProject( id: $id )
+		deleteProject( id: $id ){
+			_id
+		}
 	}
 `;
 

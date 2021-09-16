@@ -7,24 +7,29 @@ import NavBar from '@/components/shared/NavBar/NavBar';
 import Hero from '@/components/shared/Hero/Hero';
 import Footer from '@/components/shared/Footer/Footer';
 
+import { ApolloProvider } from '@apollo/client';
+import client from '@/apollo/apollo-client';
+
 const MyApp = ( { Component, pageProps, } ) => {
   // console.log( 'MyApp: ', pageProps );
 
   return (
-    <div className="portfolio-app">
+    <ApolloProvider client={ client }>
+      <div className="portfolio-app">
 
-      <header>
-        <NavBar navItems={ pageProps.navItems }/>
-      </header>
+        <header>
+          <NavBar navItems={ pageProps.navItems }/>
+        </header>
 
-      <main>
-        { Component.name === 'PageHome' && <Hero/> }
-        <div className="container">
-          <Component { ...pageProps }/>
-        </div>
-      </main>
-      <Footer/>
-    </div>
+        <main>
+          { Component.name === 'PageHome' && <Hero/> }
+          <div className="container">
+            <Component { ...pageProps }/>
+          </div>
+        </main>
+        <Footer/>
+      </div>
+    </ApolloProvider>
   );
 };
 

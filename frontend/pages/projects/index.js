@@ -1,36 +1,31 @@
 import { useEffect, useState } from 'react';
 
-import { useGetProjects, useUpdateProject, useDeleteProject, useCreateProject } from '@/actions/index';
+import {
+  useGetProjects,
+  useUpdateProject,
+  useDeleteProject,
+  useCreateProject
+} from '@/apollo/actions/index';
 
 import styleProjects from './Projects.module.scss';
 import ProjectCard from '@/components/Projects/ProjectCard/ProjectCard';
 
-import withApollo from '@/hoc/withApollo';
+import {
+// gql,
+// useQuery,
+// useLazyQuery
+} from '@apollo/client';
 
-import { gql, useQuery } from '@apollo/client';
+import client from '@/apollo/apollo-client';
 
-const GET_PROJECTS = gql`
-	query Projects{
-		projects {
-			_id
-			title
-			company
-			companyWebsite
-			location
-			jobTitle
-			description
-			startDate
-			endDate
-		}
-	}
-`;
+import { GET_PROJECTS } from '@/apollo/queries/index';
 
-const PageProjects = () => {
+const PageProjects = ( { pageData, } ) => {
 
-  const [ projects, setProjects, ] = useState( [] );
-  // const [ getProjects, { loading, data, }, ] = useLazyQuery( GET_PROJECTS );
+  const [ projects, setProjects, ] = useState( [ ...pageData.projects, ] );
 
-  // const { data, } = useGetProjects( );
+  const { data, } = useGetProjects();
+
   const [ updateProject, ] = useUpdateProject();
   const [ deleteProject, ] = useDeleteProject();
   const [ createProject, ] = useCreateProject();
@@ -40,33 +35,38 @@ const PageProjects = () => {
   }, [] );
 
   useEffect( () => {
-    console.log( projects );
+    // console.log( 'pageData.projects:', projects );
   }, [ projects, ] );
 
-  // if ( data && data.projects.length > 0 && ( projects.length === 0 || data.projects.length !== projects.length ) ){
-  //   setProjects( data.projects );
-  // }
-
-  // if ( loading ){
-  //   return <h1>Loading...</h1>;
-  // }
+  if ( data && data.projects.length > 0 && ( projects.length === 0 || data.projects.length !== projects.length ) ){
+    // console.log( 'data', data );
+    setProjects( [ ... data.projects, ] );
+  }
 
   const handleCreateProjectBtnClick = async () => {
-    const newProject = await createProject();
+    const response = await createProject();
+    const newProject = response.data.createProject;
+    // console.log( 'handleCreateProjectBtnClick: ', newProject );
     setProjects( [ ...projects, newProject, ] );
   };
 
   const handleUpdateProjectBtnClick = async ( id ) => {
-    const updatedProject = await updateProject( { variables: { id: id, }, } );
 
+    const response = await updateProject( { variables: { id: id, }, } );
+    const updatedProject = response.data.updateProject;
+
+    // console.log( 'handleUpdateProjectBtnClick', updatedProject );
     const index = projects.findIndex( project => project._id === id );
     const newProjects = [ ...projects, ];
-    newProjects[index] = updatedProject.data.updateProject;
+    newProjects[index] = updatedProject;
     setProjects( newProjects );
   };
 
   const handleDeleteProjectBtnClick = async ( id ) => {
-    const deletedProjectId = await deleteProject( { variables: { id: id, }, } );
+    const response = await deleteProject( { variables: { id: id, }, } );
+    // console.log( 'handleDeleteProjectBtnClick: ', response );
+    const deletedProjectId = response.data.deleteProject._id;
+
     const index = projects.findIndex( project => project._id === deletedProjectId );
     const newProjects = [ ...projects, ];
     newProjects.splice( index, 1 );
@@ -86,8 +86,9 @@ const PageProjects = () => {
 
       <section className={ `${ styleProjects.Projects } pb-5` }>
         <div className="row">
-          { projects.length > 0 && projects.map( project =>
-            <div className="col-md-4" key={ project._id }>
+
+          { projects?.length > 0 && projects.map( project =>
+            <div className="col-md-4" key={ project._id } data-key={ project._id }>
               <ProjectCard project={ project }/>
               <button
                 className="btn btn-warning mx-2"
@@ -99,6 +100,7 @@ const PageProjects = () => {
               >Delete Project</button>
             </div> )
           }
+
         </div>
       </section>
 
@@ -114,16 +116,18 @@ const PageProjects = () => {
   );
 };
 
-export default withApollo( PageProjects );
+export default PageProjects;
 
 export const getStaticProps = async () => {
-  const { loading, error, data, } = useQuery( GET_PROJECTS );
+
+  const { data, } = await client.query( { query: GET_PROJECTS, } );
 
   return {
     props: {
-      data: {
+      pageData: {
+        projects: data.projects,
       },
     },
-    // revalidate: 1,
+    revalidate: 1,
   };
 };
