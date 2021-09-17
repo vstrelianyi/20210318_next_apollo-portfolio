@@ -1,5 +1,3 @@
-const Project = require( '../../database/models/project' );
-
 const data = {
   projects: [
     {
@@ -63,5 +61,17 @@ exports.projectMutations = {
     const deletedProject = await ctx.models.Project.findAndDelete( id );
 
     return deletedProject;
+  },
+};
+
+exports.userMutations = {
+  signIn: async ( root, args, ctx ) => {
+    return ctx.models.User.signIn();
+  },
+  signUp: async ( root, args, ctx ) => {
+    return ctx.models.User.signUp();
+  },
+  signOut: async ( root, args, ctx ) => {
+    return ctx.models.User.signOut();
   },
 };

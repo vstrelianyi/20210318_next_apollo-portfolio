@@ -2,16 +2,22 @@ const mongoose = require( 'mongoose' );
 const { ApolloServer, gql, } = require( 'apollo-server-express' );
 
 //resolvers
-const { projectQueries, projectMutations, } = require( './resolvers' );
-const { projectTypes, } = require( './types' );
+const {
+  projectQueries,
+  projectMutations,
+  userMutations,
+} = require( './resolvers' );
+const { projectTypes, userTypes, } = require( './types' );
 
 // GraphqlModels
 const Project = require( './models/Project' );
+const User = require( './models/User' );
 
 exports.createApolloServer = () => {
   // construct a schema, using GRAPHQL schema language
   const typeDefs = gql`
 		${ projectTypes }
+		${ userTypes }
 		type Query {
 			hello: String
 			project( id: ID ): Project
@@ -22,6 +28,10 @@ exports.createApolloServer = () => {
 			updateProject( id: ID, input: ProjectInput ): Project
 			createProject( input: ProjectInput ): Project
 			deleteProject( id: ID ): Project
+
+			signUp( input: SignUpInput): String
+			signIn: String
+			signOut: String
 		}
 	`;
 
@@ -32,6 +42,7 @@ exports.createApolloServer = () => {
     },
     Mutation: {
       ...projectMutations,
+      ...userMutations,
     },
   };
 
@@ -41,6 +52,7 @@ exports.createApolloServer = () => {
     context: () => ( {
       models: {
         Project: new Project( mongoose.model( 'Project' ) ),
+        User: new User( mongoose.model( 'User ' ) ),
       },
     } ), // will be provided to all resolvers
   } );
