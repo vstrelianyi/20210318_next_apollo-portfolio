@@ -1,8 +1,6 @@
 const express = require( 'express' );
 const next = require( 'next' );
 
-const { ApolloServer, gql, } = require( 'apollo-server-express' );
-
 const port = parseInt( process.env.PORT, 10 ) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next( {
@@ -10,43 +8,14 @@ const app = next( {
 } );
 const handle = app.getRequestHandler();
 
-//resolvers
-const { projectQueries, projectMutations, } = require( './graphql/resolvers' );
-const { projectTypes, } = require( './graphql/types' );
-
 // Connect to DB
 require( './database' ).connect();
 
 app.prepare().then( async () => {
   const server = express();
 
-  // construct a schema, using GRAPHQL schema language
-  const typeDefs = gql`
-		${ projectTypes }
-		type Query {
-			hello: String
-			project( id: ID ): Project
-			projects: [Project]
-		}
+  const apolloServer = require( './graphql' ).createApolloServer();
 
-		type Mutation {
-			updateProject( id: ID, input: ProjectInput ): Project
-			createProject( input: ProjectInput ): Project
-			deleteProject( id: ID ): Project
-		}
-	`;
-
-  // the root provides a resolver for each API endpoint
-  const resolvers = {
-    Query: {
-      ...projectQueries,
-    },
-    Mutation: {
-      ...projectMutations,
-    },
-  };
-
-  const apolloServer = new ApolloServer( { typeDefs, resolvers, } );
   await apolloServer.start();
   apolloServer.applyMiddleware( { app: server, } );
 

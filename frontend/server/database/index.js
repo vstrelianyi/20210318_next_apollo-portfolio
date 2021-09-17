@@ -8,7 +8,7 @@ exports.connect = () => {
     config.DB_URI,
     {},
     () => {
-      console.log( 'connected to DB' );
+      console.log( '> connected to DB' );
     }
   );
 };
