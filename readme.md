@@ -2,3 +2,6 @@ https://coursehunter.net/course/next-js-i-apollo-prilozhenie-portfolio-s-react-g
 
 github
 https://github.com/Jerga99/nextjs-portfolio-template
+
+#start project
+npm run server

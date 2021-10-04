@@ -1,6 +1,8 @@
 const mongoose = require( 'mongoose' );
 const { ApolloServer, gql, } = require( 'apollo-server-express' );
 
+const { buildAuthContext, } = require( './context' );
+
 //resolvers
 const {
   projectQueries,
@@ -30,7 +32,7 @@ exports.createApolloServer = () => {
 			deleteProject( id: ID ): Project
 
 			signUp( input: SignUpInput): String
-			signIn: String
+			signIn( input: SignInInput): User
 			signOut: String
 		}
 	`;
@@ -50,9 +52,10 @@ exports.createApolloServer = () => {
     typeDefs,
     resolvers,
     context: () => ( {
+      ...buildAuthContext(),
       models: {
         Project: new Project( mongoose.model( 'Project' ) ),
-        User: new User( mongoose.model( 'User ' ) ),
+        User: new User( mongoose.model( 'User' ) ),
       },
     } ), // will be provided to all resolvers
   } );

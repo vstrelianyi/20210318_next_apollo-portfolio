@@ -1,3 +1,10 @@
 .AppNavbar{
 	flex: 0 0 100%;
+
+	:global{
+		.nav-right{
+			margin-left: auto;
+		}
+	}
+
 }

@@ -65,11 +65,13 @@ exports.projectMutations = {
 };
 
 exports.userMutations = {
-  signIn: async ( root, args, ctx ) => {
-    return ctx.models.User.signIn();
+  signUp: async ( root, { input, }, ctx ) => {
+    const registeredUser = await ctx.models.User.signUp( input );
+
+    return registeredUser._id;
   },
-  signUp: async ( root, args, ctx ) => {
-    return ctx.models.User.signUp();
+  signIn: async ( root, { input, }, ctx ) => {
+    return ctx.models.User.signIn( input, ctx );
   },
   signOut: async ( root, args, ctx ) => {
     return ctx.models.User.signOut();

@@ -11,7 +11,7 @@ const NavBar = ( { navItems, } ) => {
         <Navbar.Toggle />
 
         <Navbar.Collapse>
-          <Nav className="mr-auto">
+          <Nav className="nav-left">
             { navItems && navItems.map( item => {
               return (
                 <Link key={ item.databaseId } href={ item.url } >
@@ -21,7 +21,7 @@ const NavBar = ( { navItems, } ) => {
             } ) }
           </Nav>
 
-          <Nav>
+          <Nav className="nav-right">
             <Link href="/register"><a className="nav-link mr-3">Sign Up</a></Link>
             <Link href="/login"><a className="nav-link btn btn-success bg-green-2 bright mr-3">Sign In</a></Link>
           </Nav>

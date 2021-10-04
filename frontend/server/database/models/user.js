@@ -1,6 +1,9 @@
 const mongoose = require( 'mongoose' );
 const Schema = mongoose.Schema;
 
+const bcrypt = require( 'bcryptjs' );
+const { deleteOne, } = require( './project' );
+
 const userSchema = new Schema( {
   avatar: { type: String, },
   email: {
@@ -28,7 +31,7 @@ const userSchema = new Schema( {
     required: true,
   },
   role: {
-    enum: [ 'guest', 'admin', 'instructor', ],
+    enum: [ 'guest', 'admin', 'instructor', 'tester', ],
     type: String,
     required: true,
     default: 'guest',
@@ -42,5 +45,32 @@ const userSchema = new Schema( {
   },
 
 } );
+
+userSchema.pre( 'save', function ( next ) {
+  const user = this;
+
+  bcrypt.genSalt( 10, function ( err, salt ) {
+    if ( err ){
+      return next( err );
+    }
+    bcrypt.hash( user.password, salt, function ( err, hash ) {
+      if ( err ){
+        return next( err );
+      }
+      user.password = hash;
+      next();
+    } );
+  } );
+} );
+
+userSchema.methods.validatePassword = function ( passwordForValidation, done ) {
+  bcrypt.compare( passwordForValidation, this.password, function ( error, isSuccess ) {
+    if ( error ){
+      return deleteOne( error );
+    }
+
+    return  done( null, isSuccess );
+  } );
+};
 
 module.exports = mongoose.model( 'User', userSchema );
