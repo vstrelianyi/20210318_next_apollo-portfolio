@@ -33,7 +33,7 @@ exports.createApolloServer = () => {
 
 			signUp( input: SignUpInput): String
 			signIn( input: SignInInput): User
-			signOut: String
+			signOut: Boolean
 		}
 	`;
 
@@ -51,13 +51,17 @@ exports.createApolloServer = () => {
   const apolloServer = new ApolloServer( {
     typeDefs,
     resolvers,
-    context: () => ( {
-      ...buildAuthContext(),
-      models: {
-        Project: new Project( mongoose.model( 'Project' ) ),
-        User: new User( mongoose.model( 'User' ) ),
-      },
-    } ), // will be provided to all resolvers
+    context: ( args ) => {
+      const { req, } = args;
+
+      return {
+        ...buildAuthContext( req ),
+        models: {
+          Project: new Project( mongoose.model( 'Project' ) ),
+          User: new User( mongoose.model( 'User' ) ),
+        },
+      }; // will be provided to all resolvers
+    },
   } );
 
   return apolloServer;

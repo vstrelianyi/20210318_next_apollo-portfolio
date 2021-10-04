@@ -74,6 +74,6 @@ exports.userMutations = {
     return ctx.models.User.signIn( input, ctx );
   },
   signOut: async ( root, args, ctx ) => {
-    return ctx.models.User.signOut();
+    return ctx.models.User.signOut( ctx );
   },
 };

@@ -26,8 +26,19 @@ class User {
     }
   }
 
-  signOut () {
-    return 'Signing out...';
+  signOut ( ctx ) {
+    try {
+      console.log( 'Before signOut: is authenticated: ', ctx.isAuthenticated() );
+      console.log( 'user:', ctx.getUser() );
+      ctx.signOut();
+      console.log( 'After signOut: is authenticated', ctx.isAuthenticated()  );
+      console.log( 'user:', ctx.getUser() );
+
+      return true;
+    }
+    catch ( error ){
+      return false;
+    }
   }
 }
 

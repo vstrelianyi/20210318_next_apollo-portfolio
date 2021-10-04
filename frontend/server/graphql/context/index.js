@@ -1,6 +1,6 @@
 const passport = require( 'passport' );
 
-const authenticateUser = ( { email, password, } ) => {
+const authenticateUser = ( req, { email, password, } ) => {
   return new Promise( ( resolve, reject ) => {
     console.log( `Calling authenticateUser: user: ${ email }` );
 
@@ -8,9 +8,17 @@ const authenticateUser = ( { email, password, } ) => {
       if ( error ){
         return reject( new Error( error ) );
       }
-      // if we will get a user - we can save session to DB
       if ( user ){
-        return resolve( user );
+        // req.hello();
+        // if we will get a user - we can save session to DB
+        req.login( user, ( error ) => {
+          if ( error ){
+            return reject( new Error( error ) );
+          }
+
+          return resolve( user );
+        } );
+
       }
       else {
         return reject ( new Error( 'Invalid email or password' ) );
@@ -23,11 +31,14 @@ const authenticateUser = ( { email, password, } ) => {
 
 };
 
-exports.buildAuthContext = () => {
+exports.buildAuthContext = ( req ) => {
   const auth = {
     authenticate: ( options ) => {
-      return authenticateUser( options );
+      return authenticateUser( req, options );
     },
+    signOut: () => req.logout(),
+    isAuthenticated: () => req.isAuthenticated(),
+    getUser: () => req.user,
   };
 
   return auth;

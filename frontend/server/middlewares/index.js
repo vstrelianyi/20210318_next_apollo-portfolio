@@ -17,4 +17,12 @@ exports.init = ( server, db ) => {
   };
 
   server.use( session( sessionOptions ) );
+  server.use( passport.initialize() ); // adds login function to req
+  server.use( passport.session() );
+
+  // server.use( ( req, res, next ) => {
+  //   req.hello = () => console.log( 'Hello World' );
+  //   next();
+  // } );
+
 };
