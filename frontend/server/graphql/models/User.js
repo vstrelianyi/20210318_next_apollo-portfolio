@@ -3,12 +3,17 @@ class User {
     this.Model = model;
   }
 
-  signUp ( signUpData ) {
+  async signUp ( signUpData ) {
     if ( signUpData.password !== signUpData.passwordConfirmation ){
       throw new Error( 'Password must be the same as confirmation password' );
     }
-
-    return this.Model.create( signUpData );
+    try {
+      return await this.Model.create( signUpData );
+    }
+    catch ( error ){
+      console.log( 'server -> graphql -> models -> User.js -> error:', error );
+      throw new Error( 'User with this email already exists' );
+    }
   }
 
   async signIn ( signInData, ctx ) {
