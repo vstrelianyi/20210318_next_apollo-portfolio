@@ -1,9 +1,14 @@
 import FormRegister from '@/components/Forms/FormRegister';
 
+import { useMutation  } from '@apollo/client';
+import { SIGN_UP } from '@/apollo/mutations';
+
 const PageRegister = () => {
-  const registerUser = ( registerData ) => {
-    console.log( JSON.stringify( registerData ) );
-  };
+  // const registerUser = ( registerData ) => {
+  //   console.log( JSON.stringify( registerData ) );
+  // };
+
+  const [ signUpUser, { data, loading, error, }, ] = useMutation( SIGN_UP );
 
   return (
     <>
@@ -19,7 +24,9 @@ const PageRegister = () => {
           <div className="col-md-5 mx-auto">
             <h1 className="page-title">Register</h1>
 
-            <FormRegister onSubmit={ registerUser } />
+            <FormRegister onSubmit={ registerData => {
+              signUpUser( { variables: registerData, } );
+            } } />
 
           </div>
         </div>

@@ -65,4 +65,23 @@ const DELETE_PROJECT_ITEM = gql`
 	}
 `;
 
-export { CREATE_PROJECT_ITEM, UPDATE_PROJECT_ITEM, DELETE_PROJECT_ITEM };
+// AUTH MUTATIONS
+const SIGN_UP = gql `
+	mutation SignUp(
+		$avatar: String
+		$email: String!
+		$username: String!
+		$password: String!
+		$passwordConfirmation: String!
+	){
+		signUp( input:{
+			avatar: $avatar
+			email: $email
+			username: $username
+			password: $password
+			passwordConfirmation: $passwordConfirmation
+		} )
+	}
+`;
+
+export { CREATE_PROJECT_ITEM, UPDATE_PROJECT_ITEM, DELETE_PROJECT_ITEM, SIGN_UP };
