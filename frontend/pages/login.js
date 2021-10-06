@@ -29,7 +29,7 @@ const PageLogin = () => {
               </div>
               <button
                 type="submit"
-                className="btn btn-main bg-blue py-2 ttu">Submit</button>
+                className="btn btn-main bg-blue py-2 ttu mt-2">Submit</button>
             </form>
           </div>
         </div>

@@ -2,6 +2,7 @@ import FormRegister from '@/components/Forms/FormRegister';
 
 import { useMutation  } from '@apollo/client';
 import { SIGN_UP } from '@/apollo/mutations';
+import Redirect from '@/components/Redirect/Redirect';
 
 const PageRegister = () => {
   // const registerUser = ( registerData ) => {
@@ -27,6 +28,7 @@ const PageRegister = () => {
             <FormRegister onSubmit={ registerData => {
               signUpUser( { variables: registerData, } );
             } } />
+            { data && data.signUp && <Redirect to="/login"/> }
 
           </div>
         </div>
