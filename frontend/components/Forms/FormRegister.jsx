@@ -1,24 +1,16 @@
-import { useState } from 'react';
+// import { useState } from 'react';
+
+import { useForm } from 'react-hook-form';
 
 const FormRegister = ( { onSubmit, } ) => {
-  const [ form, setForm, ] = useState( {} );
-  const handleChange = ( e ) => {
-    const { name, value, } = e.target;
-    setForm(
-      {
-        ...form,
-        [name]: value,
-      }
-    );
-  };
-
-  const handleSubmit = ( e ) => {
-    e.preventDefault();
-    onSubmit( form );
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, },
+  } = useForm();
 
   return (
-    <form onSubmit={ handleSubmit }>
+    <form onSubmit={ handleSubmit( onSubmit ) }>
 
       <div className="form-group">
         <label htmlFor="avatar">Avatar</label>
@@ -27,7 +19,7 @@ const FormRegister = ( { onSubmit, } ) => {
           className="form-control"
           id="avatar"
           name="avatar"
-          onChange= { handleChange }
+          { ...register( 'avatar' ) }
         />
       </div>
 
@@ -38,7 +30,7 @@ const FormRegister = ( { onSubmit, } ) => {
           className="form-control"
           id="username"
           name="username"
-          onChange= { handleChange }
+          { ...register( 'username' ) }
         />
       </div>
 
@@ -49,7 +41,7 @@ const FormRegister = ( { onSubmit, } ) => {
           className="form-control"
           id="email"
           name="email"
-          onChange= { handleChange }
+          { ...register( 'email' ) }
         />
       </div>
 
@@ -60,7 +52,7 @@ const FormRegister = ( { onSubmit, } ) => {
           className="form-control"
           id="password"
           name="password"
-          onChange= { handleChange }
+          { ...register( 'password' ) }
         />
       </div>
 
@@ -71,7 +63,7 @@ const FormRegister = ( { onSubmit, } ) => {
           className="form-control"
           id="passwordConfirmation"
           name="passwordConfirmation"
-          onChange= { handleChange }
+          { ...register( 'passwordConfirmation' ) }
         />
       </div>
 
