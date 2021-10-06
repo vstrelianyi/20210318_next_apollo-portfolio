@@ -11,6 +11,12 @@ const PageRegister = () => {
 
   const [ signUpUser, { data, loading, error, }, ] = useMutation( SIGN_UP );
 
+  const errorMessage = ( error ) => {
+    console.log( error.message );
+
+    return <h1>{ error.message }</h1>;
+  };
+
   return (
     <>
       <section className="section-title">
@@ -29,6 +35,7 @@ const PageRegister = () => {
               signUpUser( { variables: registerData, } );
             } } />
             { data && data.signUp && <Redirect to="/login"/> }
+            { error && <div className="alert alert-danger">{ errorMessage( error ) }</div> }
 
           </div>
         </div>

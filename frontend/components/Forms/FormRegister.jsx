@@ -1,13 +1,18 @@
 // import { useState } from 'react';
 
 import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
 
 const FormRegister = ( { onSubmit, } ) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, },
+    formState,
   } = useForm();
+
+  useEffect( () => {
+    console.log( 'formState change', formState );
+  }, [ formState, ] );
 
   return (
     <form onSubmit={ handleSubmit( onSubmit ) }>
@@ -69,7 +74,6 @@ const FormRegister = ( { onSubmit, } ) => {
 
       <button
         type="submit"
-        // type="button"
         className="btn btn-main bg-blue py-2 ttu mt-2"
       >Submit</button>
     </form>
