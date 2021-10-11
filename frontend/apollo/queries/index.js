@@ -39,4 +39,14 @@ const GET_PROJECT = gql`
 	}
 `;
 
-export { GET_PROJECTS, GET_PROJECT_IDS, GET_PROJECT  };
+const GET_USER = gql`
+	query User {
+		user{
+			_id
+			username
+			role
+		}
+	}
+`;
+
+export { GET_PROJECTS, GET_PROJECT_IDS, GET_PROJECT, GET_USER  };

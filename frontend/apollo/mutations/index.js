@@ -84,4 +84,23 @@ const SIGN_UP = gql `
 	}
 `;
 
-export { CREATE_PROJECT_ITEM, UPDATE_PROJECT_ITEM, DELETE_PROJECT_ITEM, SIGN_UP };
+const SIGN_IN = gql `
+	mutation SignIn(
+		$email: String!
+		$password: String!
+	) {
+		signIn( input: {
+			email: $email
+			password: $password
+		} ) {
+			_id
+			username
+			role
+			avatar
+		}
+	}
+`;
+
+const SIGN_OUT = gql `mutation SignOut{ signOut }`;
+
+export { CREATE_PROJECT_ITEM, UPDATE_PROJECT_ITEM, DELETE_PROJECT_ITEM, SIGN_UP, SIGN_IN, SIGN_OUT };

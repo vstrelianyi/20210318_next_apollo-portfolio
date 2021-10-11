@@ -26,7 +26,7 @@ const PageRegister = () => {
           </div>
         </div>
       </section>
-      <div className="bwm-form">
+      <div className="">
         <div className="row">
           <div className="col-md-5 mx-auto">
             <h1 className="page-title">Register</h1>

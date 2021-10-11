@@ -9,9 +9,14 @@ import Footer from '@/components/shared/Footer/Footer';
 
 import { ApolloProvider } from '@apollo/client';
 import client from '@/apollo/apollo-client';
+import { useEffect } from 'react';
 
-const MyApp = ( { Component, pageProps, } ) => {
-  // console.log( 'MyApp: ', pageProps );
+const MyApp = ( props ) => {
+  const { Component, pageProps, } = props;
+
+  useEffect( () => {
+    console.log( 'MyApp -> props:', props );
+  }, [] );
 
   return (
     <ApolloProvider client={ client }>
@@ -24,10 +29,13 @@ const MyApp = ( { Component, pageProps, } ) => {
         <main>
           { Component.name === 'PageHome' && <Hero/> }
           <div className="container">
-            <Component { ...pageProps }/>
+            { /* renders page */ }
+            <Component { ...pageProps } client={ client }/>
           </div>
         </main>
+
         <Footer/>
+
       </div>
     </ApolloProvider>
   );

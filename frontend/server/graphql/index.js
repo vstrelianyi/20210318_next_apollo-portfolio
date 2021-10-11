@@ -8,6 +8,7 @@ const {
   projectQueries,
   projectMutations,
   userMutations,
+  userQueries,
 } = require( './resolvers' );
 const { projectTypes, userTypes, } = require( './types' );
 
@@ -24,6 +25,8 @@ exports.createApolloServer = () => {
 			hello: String
 			project( id: ID ): Project
 			projects: [Project]
+
+			user: User
 		}
 
 		type Mutation {
@@ -41,6 +44,7 @@ exports.createApolloServer = () => {
   const resolvers = {
     Query: {
       ...projectQueries,
+      ...userQueries,
     },
     Mutation: {
       ...projectMutations,

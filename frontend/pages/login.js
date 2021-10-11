@@ -1,4 +1,17 @@
+import FormLogin from '@/components/Forms/FormLogin';
+import { useSignIn } from '@/apollo/actions';
+import Redirect from '@/components/Redirect/Redirect';
+
 const PageLogin = () => {
+
+  const [ signIn, { data, loading, error, }, ] = useSignIn();
+
+  const errorMessage = ( error ) => {
+    console.log( error.message );
+
+    return <h1>{ error.message }</h1>;
+  };
+
   return (
     <>
       <section className="section-title">
@@ -8,29 +21,15 @@ const PageLogin = () => {
           </div>
         </div>
       </section>
-      <div className="bwm-form">
+      <div className="mt-5">
         <div className="row">
           <div className="col-md-5 mx-auto">
             <h1 className="page-title">Login</h1>
-            <form>
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="email" />
-              </div>
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="password" />
-              </div>
-              <button
-                type="submit"
-                className="btn btn-main bg-blue py-2 ttu mt-2">Submit</button>
-            </form>
+            <FormLogin onSubmit={ ( signInData ) => {
+              signIn( { variables: signInData, } );
+            } }/>
+            { data && data.signIn && <Redirect to="/"/> }
+            { error && <div className="alert alert-danger">{ errorMessage( error ) }</div> }
           </div>
         </div>
       </div>

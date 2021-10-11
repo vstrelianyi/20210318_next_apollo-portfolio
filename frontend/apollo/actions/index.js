@@ -1,7 +1,7 @@
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 
-import { GET_PROJECTS } from '@/apollo/queries/index';
-import { CREATE_PROJECT_ITEM, UPDATE_PROJECT_ITEM, DELETE_PROJECT_ITEM } from '@/apollo/mutations/index';
+import { GET_PROJECTS, GET_USER } from '@/apollo/queries/index';
+import { CREATE_PROJECT_ITEM, UPDATE_PROJECT_ITEM, DELETE_PROJECT_ITEM, SIGN_IN, SIGN_OUT } from '@/apollo/mutations/index';
 
 const useGetProjects = () => useQuery( GET_PROJECTS );
 
@@ -39,4 +39,20 @@ const useCreateProject = () => useMutation(
   }
 );
 
-export { useGetProjects, useUpdateProject, useDeleteProject, useCreateProject };
+// Auth actions ---------------
+const useSignIn = () => useMutation( SIGN_IN, {
+  update ( cache, { data: { signIn: signedInUser, }, } ) { // signedInUser - alias
+    cache.writeQuery( {
+      query: GET_USER,
+      data: {
+        user: signedInUser,
+      },
+    } );
+  },
+} );
+const useLazyGetUser = () => useLazyQuery( GET_USER );
+
+const useSignOut = () => useMutation( SIGN_OUT );
+const useGetUser = () => useQuery( GET_USER );
+
+export { useGetProjects, useUpdateProject, useDeleteProject, useCreateProject, useSignIn, useLazyGetUser, useSignOut, useGetUser };
