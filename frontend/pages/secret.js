@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import withAuth from '@/hoc/withAuth';
-const PageSecret = withAuth( ( props ) => {
+const PageSecret = ( props ) => {
   useEffect( () => {
     console.log( 'PageSecret -> props:', props );
   }, [] );
@@ -24,6 +24,6 @@ const PageSecret = withAuth( ( props ) => {
     </>
   );
 
-}, 'admin' );
+};
 
-export default PageSecret;
+export default withAuth( PageSecret, 'admin' );

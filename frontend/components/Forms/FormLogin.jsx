@@ -25,7 +25,7 @@ const FormLogin = ( { onSubmit, loading, } ) => {
           id="password" />
       </div>
       {	loading && (
-        'Loging in...'
+        'Logging in...'
       )
       }
       { !loading && (

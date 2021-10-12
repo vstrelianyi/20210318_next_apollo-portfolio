@@ -14,7 +14,7 @@ const NavBar = ( { navItems, } ) => {
   }, [] );
 
   if ( data ){
-    if ( data.user && !user ) setUser( data.user );
+    if ( data.user !== user ) setUser( data.user );
     if ( !data.user && user ) setUser( null );
     if ( !hasResponse ) setHasResponse( true );
 

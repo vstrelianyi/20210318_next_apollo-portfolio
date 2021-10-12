@@ -27,7 +27,7 @@ const PageLogout = ( { client, } ) => {
         <div className="row">
           <div className="col-md-5 mx-auto">
             <h1 className="page-title">Logout</h1>
-            <p>Loging out...</p>
+            <p>Logging out...</p>
           </div>
         </div>
       </div>
