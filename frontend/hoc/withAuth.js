@@ -3,7 +3,7 @@
 import { useGetUser } from '@/apollo/actions';
 import Redirect from '@/components/Redirect/Redirect';
 
-const withAuth = ( WrappedComponent, role ) => ( props ) => {
+const withAuth = ( WrappedComponent, roles ) => ( props ) => {
   const { data: { user, } = {}, loading, error, } = useGetUser( { fetchPolicy: 'network-only', } ); // always get from server( not cache )
 
   if (
@@ -15,7 +15,7 @@ const withAuth = ( WrappedComponent, role ) => ( props ) => {
   }
 
   if ( user ){
-    if ( role && user.role !== role ){
+    if ( roles.length && !roles.includes( user.role ) ){
       return <Redirect to="/login"/>;
     }
 

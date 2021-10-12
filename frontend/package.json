@@ -26,7 +26,7 @@
   "homepage": "https://github.com/vstrelianyi/20210318_next_apollo-portfolio#readme",
   "dependencies": {
     "@apollo/client": "^3.4.16",
-    "apollo-server-express": "^3.3.0",
+    "apollo-server-express": "^3.4.0",
     "axios": "^0.22.0",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.1.3",

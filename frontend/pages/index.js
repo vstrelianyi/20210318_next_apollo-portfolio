@@ -1,4 +1,10 @@
-const PageHome = () => {
+import { useEffect } from 'react';
+
+const PageHome = ( props ) => {
+  useEffect( () => {
+    console.log( 'PageHome -> props:', props );
+  }, [] );
+
   return (
     <>
 

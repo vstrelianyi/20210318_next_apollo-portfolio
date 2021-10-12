@@ -22,4 +22,4 @@ const PageNewProject = ( props ) => {
 
 };
 
-export default withAuth( PageNewProject, 'admin' );
+export default withAuth( PageNewProject, [ 'admin', 'editor', ] );

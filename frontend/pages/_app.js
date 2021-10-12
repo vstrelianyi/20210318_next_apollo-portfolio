@@ -9,13 +9,16 @@ import Footer from '@/components/shared/Footer/Footer';
 
 import { ApolloProvider } from '@apollo/client';
 import client from '@/apollo/apollo-client';
+
 import { useEffect } from 'react';
+// import withApollo from '@/hoc/withApollo';
+// import withStaticProps from '@/hoc/withStaticProps';
 
 const MyApp = ( props ) => {
   const { Component, pageProps, } = props;
 
   useEffect( () => {
-    console.log( 'MyApp -> props:', props );
+    console.log( 'MyApp -> pageProps:', pageProps );
   }, [] );
 
   return (
@@ -30,7 +33,9 @@ const MyApp = ( props ) => {
           { Component.name === 'PageHome' && <Hero/> }
           <div className="container">
             { /* renders page */ }
-            <Component { ...pageProps } client={ client }/>
+            <Component
+              { ...pageProps }
+            />
           </div>
         </main>
 
@@ -43,7 +48,7 @@ const MyApp = ( props ) => {
 
 MyApp.getInitialProps = async ( context ) => {
   // const initialProps = App.getInitialProps && await App.getInitialProps( context );
-  // console.log( initialProps );
+  // console.log( 'getInitialProps', context );
 
   return {
     pageProps: {
@@ -59,3 +64,4 @@ MyApp.getInitialProps = async ( context ) => {
 };
 
 export default MyApp;
+// export default withApollo( MyApp );

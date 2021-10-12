@@ -18,6 +18,8 @@ import {
 
 import client from '@/apollo/apollo-client';
 
+import Link from 'next/link';
+
 import { GET_PROJECTS } from '@/apollo/queries/index';
 
 const PageProjects = ( { pageData, } ) => {
@@ -81,7 +83,8 @@ const PageProjects = ( { pageData, } ) => {
             <h1>Projects</h1>
           </div>
         </div>
-        <button className="btn btn-primary mb-3" onClick={ handleCreateProjectBtnClick }>Create project</button>
+        <Link href="/projects/new"><a className="btn btn-primary mb-3">Create project</a></Link>
+        { /* <button className="btn btn-primary mb-3" onClick={ handleCreateProjectBtnClick }>Create project</button> */ }
       </section>
 
       <section className={ `${ styleProjects.Projects } pb-5` }>
@@ -118,7 +121,8 @@ const PageProjects = ( { pageData, } ) => {
 
 export default PageProjects;
 
-export const getStaticProps = async () => {
+export const getStaticProps = async ( context ) => {
+  console.log( context );
 
   const { data, } = await client.query( { query: GET_PROJECTS, } );
 

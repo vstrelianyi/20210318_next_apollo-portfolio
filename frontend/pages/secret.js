@@ -26,4 +26,4 @@ const PageSecret = ( props ) => {
 
 };
 
-export default withAuth( PageSecret, 'admin' );
+export default withAuth( PageSecret, [ 'admin', ] );
